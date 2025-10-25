@@ -49,13 +49,6 @@ export default function BottomNavigation() {
                   <Icon size={24} />
                 </motion.div>
                 <span className="text-[9px] mt-1 font-medium">{t(label)}</span>
-                {/* {isActive && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary-red rounded-full"
-                    transition={{ duration: 0.2 }}
-                  />
-                )} */}
               </motion.div>
             </Link>
           );
