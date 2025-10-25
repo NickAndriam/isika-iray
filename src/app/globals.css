@@ -158,7 +158,8 @@ body {
 }
 
 input,
-textarea {
+textarea,
+select {
   color: black;
 }
 
