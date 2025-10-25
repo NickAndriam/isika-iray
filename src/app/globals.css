@@ -5,11 +5,20 @@
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+  --color-primary-red: #ba1a1a;
+  --color-primary-green: #006d32;
+  --color-primary-gold: #d4af37;
+  --color-background: #ffffff;
+  --color-surface: #f8f9fa;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #6b7280;
+  --color-text-muted: #9ca3af;
+  --color-border: #e5e7eb;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --font-sans: Inter, Poppins, Nunito, system-ui, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,8 +28,141 @@
   }
 }
 
+/* Fallback styles in case TailwindCSS doesn't load */
+* {
+  box-sizing: border-box;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* Basic utility classes as fallback */
+.min-h-screen {
+  min-height: 100vh;
+}
+.flex {
+  display: flex;
+}
+.items-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.text-center {
+  text-align: center;
+}
+.font-bold {
+  font-weight: bold;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+.p-4 {
+  padding: 1rem;
+}
+.p-8 {
+  padding: 2rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+.mb-8 {
+  margin-bottom: 2rem;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.w-full {
+  width: 100%;
+}
+.max-w-md {
+  max-width: 28rem;
+}
+.text-2xl {
+  font-size: 1.5rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+}
+.bg-white {
+  background-color: white;
+}
+.bg-green-500 {
+  background-color: #10b981;
+}
+.bg-slate-100 {
+  background-color: #f1f5f9;
+}
+.bg-slate-50 {
+  background-color: #f8fafc;
+}
+.text-slate-800 {
+  color: #1e293b;
+}
+.text-slate-600 {
+  color: #475569;
+}
+.text-slate-500 {
+  color: #64748b;
+}
+.text-green-600 {
+  color: #059669;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+.space-y-3 > * + * {
+  margin-top: 0.75rem;
+}
+.space-x-2 > * + * {
+  margin-left: 0.5rem;
+}
+.w-2 {
+  width: 0.5rem;
+}
+.h-2 {
+  height: 0.5rem;
+}
+.w-20 {
+  width: 5rem;
+}
+.h-20 {
+  height: 5rem;
+}
+
+input,
+textarea {
+  color: black;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(0, 0, 0, 0.468);
 }

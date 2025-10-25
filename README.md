@@ -1,36 +1,147 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Isika iray - Social Good Platform for Madagascar
 
-## Getting Started
+A revolutionary, mobile-first social-good platform built for Madagascar. It connects people in need of practical help (farming, electronics, tutoring, health, mechanics, repairs, etc.) with nearby individuals or businesses who can offer skills, advice, or services.
 
-First, run the development server:
+## 🌟 Features
+
+### Core Functionality
+
+- **User Onboarding**: Multi-step registration with role selection (helper/seeker/both)
+- **Account Types**: Personal and Company accounts with different features
+- **Post System**: Create help requests or offers with categories, images, and contact methods
+- **Interactive Map**: View nearby help with filtering by category and account type
+- **Messaging System**: Secure in-app messaging with contact requests
+- **Trust & Reputation**: Star ratings, reviews, and badge system
+- **Community Board**: Daily tips, stories, and expert content
+
+### Design & UX
+
+- **Mobile-First**: Optimized for mobile devices with touch-friendly interface
+- **Malagasy Culture**: Color palette and design inspired by Madagascar
+- **Multilingual**: Support for Malagasy, French, and English
+- **Smooth Animations**: Framer Motion animations throughout the app
+- **Offline Support**: Graceful handling of offline states
+
+## 🎨 Design System
+
+### Colors
+
+- **Primary Red**: #BA1A1A
+- **Primary Green**: #006D32
+- **Gold**: #D4AF37
+- **White**: #FFFFFF
+
+### Typography
+
+- **Font Family**: Inter, Poppins, Nunito
+- **Modern, rounded, friendly** design
+
+## 🛠 Tech Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: TailwindCSS with custom design tokens
+- **Animations**: Framer Motion
+- **State Management**: Zustand
+- **Internationalization**: i18next
+- **Icons**: Lucide React
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd isika-iray
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📱 User Journey
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Onboarding**: Users select language, role, account type, and provide basic information
+2. **Home Feed**: Browse posts, community content, and search/filter options
+3. **Create Posts**: Multi-step post creation with categories, images, and contact preferences
+4. **Map View**: Interactive map showing nearby help with filtering options
+5. **Messaging**: Secure communication through contact requests and in-app chat
+6. **Profile**: Manage account, view posts, ratings, and settings
 
-## Learn More
+## 🌍 Internationalization
 
-To learn more about Next.js, take a look at the following resources:
+The app supports three languages:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Malagasy** (mg) - Primary language
+- **French** (fr) - Secondary language
+- **English** (en) - International language
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Language switching is available in the profile settings.
 
-## Deploy on Vercel
+## 🔒 Security & Privacy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Input sanitization for messages
+- No GPS tracking by default
+- Encrypted data handling
+- Report/block functionality
+- No government database integration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📊 Mock Data
+
+The app includes comprehensive mock data for:
+
+- Users (personal and company accounts)
+- Posts (help requests and offers)
+- Messages and chats
+- Reviews and ratings
+- Community content
+- Map pins and locations
+
+## 🎯 Success Criteria
+
+✅ Users can post or offer help with optional images and phone numbers  
+✅ Users can browse nearby offers via feed or interactive map  
+✅ Users can contact others safely through messaging or by phone  
+✅ All flows are complete and interactive with dummy data  
+✅ Design is mobile-first, app-like, and inspired by Madagascar  
+✅ Users can rate and view trusted profiles  
+✅ Framer Motion creates smooth, modern feel throughout
+
+## 🚧 Development Status
+
+This is a fully functional MVP with realistic UI logic and flows powered by mock JSON data. The app feels like a complete, modern mobile experience with:
+
+- Complete onboarding flow
+- Functional navigation
+- Post creation and management
+- Interactive map interface
+- Messaging system
+- Profile management
+- Trust and reputation system
+- Multilingual support
+- Smooth animations
+
+## 🤝 Contributing
+
+This project is built as a demonstration of a social-good platform for Madagascar. The codebase is structured for easy extension and customization.
+
+## 📄 License
+
+This project is for demonstration purposes.
