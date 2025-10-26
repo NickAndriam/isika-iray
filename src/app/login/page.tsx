@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { useAuthStore } from "@/store/useAuthStore";
 import { useAppStore } from "@/store/useAppStore";
 import { mockUsers } from "@/data/mockData";
 import { User, Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
@@ -16,7 +17,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
 
   const { t } = useTranslation();
-  const { setCurrentUser } = useAppStore();
+  const { login } = useAuthStore();
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -26,13 +27,13 @@ export default function LoginPage() {
 
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Find user by email (mock authentication)
-      const user = mockUsers.find(u => u.email === email);
-      
+      const user = mockUsers.find((u) => u.email === email);
+
       if (user) {
-        setCurrentUser(user);
+        login(user);
         router.push("/");
       } else {
         setError(t("invalidCredentials"));
@@ -45,7 +46,7 @@ export default function LoginPage() {
   };
 
   const handleDemoLogin = (userIndex: number) => {
-    setCurrentUser(mockUsers[userIndex]);
+    login(mockUsers[userIndex]);
     router.push("/");
   };
 
@@ -72,9 +73,7 @@ export default function LoginPage() {
           <h1 className="text-2xl font-bold text-text-primary mb-2">
             {t("welcomeBack")}
           </h1>
-          <p className="text-text-secondary">
-            {t("loginToYourAccount")}
-          </p>
+          <p className="text-text-secondary">{t("loginToYourAccount")}</p>
         </div>
 
         {/* Login Form */}
@@ -177,9 +176,13 @@ export default function LoginPage() {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-text-primary">
-                        {user.accountType === "company" ? user.businessName : user.name}
+                        {user.accountType === "company"
+                          ? user.businessName
+                          : user.name}
                       </p>
-                      <p className="text-xs text-text-secondary">{user.email}</p>
+                      <p className="text-xs text-text-secondary">
+                        {user.email}
+                      </p>
                     </div>
                   </div>
                 </motion.button>

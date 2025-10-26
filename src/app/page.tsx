@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { useAppStore } from "@/store/useAppStore";
+import { useAuthStore } from "@/store/useAuthStore";
 import { mockPosts, mockCommunityPosts } from "@/data/mockData";
 import PostCard from "@/components/PostCard";
 import CommunityBoard from "@/components/CommunityBoard";
@@ -27,7 +27,7 @@ export default function HomePage() {
     status: "all",
   });
   const { t } = useTranslation();
-  const { currentUser } = useAppStore();
+  const { currentUser } = useAuthStore();
 
   // If no user, show landing page with login/signup options
   if (!currentUser) {

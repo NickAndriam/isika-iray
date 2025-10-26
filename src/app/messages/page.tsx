@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { useAppStore } from "@/store/useAppStore";
+import { useAuthStore } from "@/store/useAuthStore";
 import { mockChats, mockMessages, mockUsers } from "@/data/mockData";
 import {
   Search,
@@ -21,7 +21,7 @@ export default function MessagesPage() {
   const [newMessage, setNewMessage] = useState("");
 
   const { t } = useTranslation();
-  const { currentUser } = useAppStore();
+  const { currentUser } = useAuthStore();
 
   const filteredChats = mockChats.filter((chat) => {
     const otherUserId = chat.participants.find((id) => id !== currentUser?.id);

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { getCategoryTranslationKey } from "@/lib/categoryUtils";
+import { useAuthStore } from "@/store/useAuthStore";
 import { useAppStore } from "@/store/useAppStore";
 import { User } from "@/types";
 import { categories } from "@/data/mockData";
@@ -25,7 +26,8 @@ export default function OnboardingPage() {
   const [formData, setFormData] = useState<Partial<User>>({});
   const [userIdCounter] = useState(() => Math.floor(Math.random() * 1000000));
   const { t } = useTranslation();
-  const { setCurrentUser, setLanguage } = useAppStore();
+  const { login } = useAuthStore();
+  const { setLanguage } = useAppStore();
   const router = useRouter();
 
   // Calculate total steps - all accounts now get an additional optional info step
@@ -64,7 +66,7 @@ export default function OnboardingPage() {
         isVerified: false,
       };
 
-      setCurrentUser(newUser);
+      login(newUser);
       router.push("/");
     }
   };

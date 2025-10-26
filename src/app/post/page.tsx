@@ -5,12 +5,11 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { getCategoryTranslationKey } from "@/lib/categoryUtils";
-import { useAppStore } from "@/store/useAppStore";
+import { useAuthStore } from "@/store/useAuthStore";
 import { categories } from "@/data/mockData";
 import {
   ArrowLeft,
   Image as ImageIcon,
-  MapPin,
   Phone,
   MessageCircle,
   AlertCircle,
@@ -31,7 +30,7 @@ export default function PostPage() {
   });
 
   const { t } = useTranslation();
-  const { currentUser } = useAppStore();
+  const { currentUser } = useAuthStore();
   const router = useRouter();
 
   // Scroll to top when step changes
@@ -73,11 +72,6 @@ export default function PostPage() {
       formData.tags.filter((t) => t !== tag)
     );
   };
-
-  if (!currentUser) {
-    router.push("/login");
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-surface">

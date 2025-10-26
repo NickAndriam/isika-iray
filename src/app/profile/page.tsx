@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { getCategoryTranslationKey } from "@/lib/categoryUtils";
 import { formatDate } from "@/lib/dateUtils";
+import { useAuthStore } from "@/store/useAuthStore";
 import { useAppStore } from "@/store/useAppStore";
 import { mockPosts, mockReviews } from "@/data/mockData";
 import {
@@ -27,16 +28,15 @@ import TabNavigation from "@/components/TabNavigation";
 import RatingDisplay from "@/components/RatingDisplay";
 import LocationMap from "@/components/LocationMap";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
-  const router = useRouter();
   const [activeTab, setActiveTab] = useState<"posts" | "reviews" | "settings">(
     "posts"
   );
   // include i18n to actually change the runtime language
   const { t, i18n } = useTranslation();
-  const { currentUser, setCurrentUser, setLanguage } = useAppStore();
+  const { currentUser, logout } = useAuthStore();
+  const { setLanguage } = useAppStore();
 
   const userPosts = currentUser
     ? mockPosts.filter((post) => post.userId === currentUser.id)
@@ -46,8 +46,7 @@ export default function ProfilePage() {
     : [];
 
   const handleLogout = () => {
-    setCurrentUser(null);
-    window.location.href = "/";
+    logout();
   };
 
   // update both i18next runtime and your app store so the UI and persisted state change
@@ -57,7 +56,6 @@ export default function ProfilePage() {
   };
 
   if (!currentUser) {
-    router.push("/login");
     return <LoadingSpinner message={t("loginRequiredDescription")} />;
   }
 
