@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { getCategoryTranslationKey } from "@/lib/categoryUtils";
 import { User, Post, Review } from "@/types";
 import { mockUsers, mockPosts, mockReviews } from "@/data/mockData";
 import {
@@ -33,7 +34,9 @@ interface UserProfilePageProps {
 
 export default function UserProfilePage({ params }: UserProfilePageProps) {
   const { id } = React.use(params);
-  const [activeTab, setActiveTab] = useState<"posts" | "reviews" | "about">("posts");
+  const [activeTab, setActiveTab] = useState<"posts" | "reviews" | "about">(
+    "posts"
+  );
   const [isFollowing, setIsFollowing] = useState(false);
 
   const { t } = useTranslation();
@@ -50,7 +53,8 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
   );
 
   const userReviews = useMemo(
-    () => (user ? mockReviews.filter((review) => review.revieweeId === user.id) : []),
+    () =>
+      user ? mockReviews.filter((review) => review.revieweeId === user.id) : [],
     [user]
   );
 
@@ -148,7 +152,9 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <h2 className="text-xl font-bold text-text-primary">
-                    {user.accountType === "company" ? user.businessName : user.name}
+                    {user.accountType === "company"
+                      ? user.businessName
+                      : user.name}
                   </h2>
                   {user.isVerified && (
                     <Shield size={20} className="text-primary-green" />
@@ -173,7 +179,9 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
 
                 <div className="flex items-center gap-1 text-sm text-text-secondary">
                   <Calendar size={14} />
-                  <span>{t("memberSince")} {formatDate(user.createdAt)}</span>
+                  <span>
+                    {t("memberSince")} {formatDate(user.createdAt)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -195,25 +203,24 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
 
             {/* Contact Actions */}
             <div className="flex gap-3">
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={handleMessage}
-                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-primary-green text-white rounded-lg font-medium hover:bg-primary-green/90 transition-colors"
-              >
-                <MessageCircle size={18} />
-                {t("message")}
-              </motion.button>
-
               {user.phoneVisible && (
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={handleCall}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 px-4 border border-primary-green text-primary-green rounded-lg font-medium hover:bg-primary-green/10 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-primary-green text-white rounded-lg font-medium hover:bg-primary-green/90 transition-colors"
                 >
                   <Phone size={18} />
                   {t("call")}
                 </motion.button>
               )}
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleMessage}
+                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 border border-primary-green text-primary-green rounded-lg font-medium hover:bg-primary-green/10 transition-colors"
+              >
+                <MessageCircle size={18} />
+                {t("message")}
+              </motion.button>
             </div>
           </div>
         </motion.section>
@@ -229,16 +236,17 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
             {user.accountType === "company" ? t("services") : t("skills")}
           </h3>
           <div className="flex flex-wrap gap-2">
-            {(user.accountType === "company" ? user.services : user.skills)?.map(
-              (skill, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-primary-green/10 text-primary-green text-sm font-medium rounded-full"
-                >
-                  {skill}
-                </span>
-              )
-            )}
+            {(user.accountType === "company"
+              ? user.services
+              : user.skills
+            )?.map((skill, index) => (
+              <span
+                key={index}
+                className="px-3 py-1 bg-primary-green/10 text-primary-green text-sm font-medium rounded-full"
+              >
+                {skill}
+              </span>
+            ))}
           </div>
         </motion.section>
 
@@ -336,7 +344,10 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
             >
               {userPosts.length === 0 ? (
                 <div className="text-center py-8">
-                  <MessageCircle size={32} className="text-text-secondary mx-auto mb-2" />
+                  <MessageCircle
+                    size={32}
+                    className="text-text-secondary mx-auto mb-2"
+                  />
                   <h3 className="text-lg font-medium text-text-primary mb-2">
                     {t("noPostsYet")}
                   </h3>
@@ -356,7 +367,7 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <span className="px-2 py-1 bg-primary-green/10 text-primary-green text-xs font-medium rounded">
-                        {post.category}
+                        {t(getCategoryTranslationKey(post.category))}
                       </span>
                       <span
                         className={`
@@ -367,7 +378,11 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
                         }
                         px-2 py-1 text-xs rounded font-medium`}
                       >
-                        {t(post.type === "help_request" ? "helpRequest" : "helpOffer")}
+                        {t(
+                          post.type === "help_request"
+                            ? "helpRequest"
+                            : "helpOffer"
+                        )}
                       </span>
                       <span
                         className={`text-xs font-medium ${
@@ -411,7 +426,10 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
             >
               {userReviews.length === 0 ? (
                 <div className="text-center py-8">
-                  <Star size={32} className="text-text-secondary mx-auto mb-2" />
+                  <Star
+                    size={32}
+                    className="text-text-secondary mx-auto mb-2"
+                  />
                   <h3 className="text-lg font-medium text-text-primary mb-2">
                     {t("noReviewsYet")}
                   </h3>
@@ -475,17 +493,19 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
                   <div className="flex items-center gap-3">
                     <UserIcon size={18} className="text-primary-green" />
                     <div>
-                      <span className="text-sm text-text-secondary">{t("accountType")}</span>
-                      <p className="text-text-primary">
-                        {t(user.accountType)}
-                      </p>
+                      <span className="text-sm text-text-secondary">
+                        {t("accountType")}
+                      </span>
+                      <p className="text-text-primary">{t(user.accountType)}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
                     <MapPin size={18} className="text-primary-green" />
                     <div>
-                      <span className="text-sm text-text-secondary">{t("location")}</span>
+                      <span className="text-sm text-text-secondary">
+                        {t("location")}
+                      </span>
                       <p className="text-text-primary">
                         {user.region}
                         {user.commune && `, ${user.commune}`}
@@ -496,7 +516,9 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
                   <div className="flex items-center gap-3">
                     <Calendar size={18} className="text-primary-green" />
                     <div>
-                      <span className="text-sm text-text-secondary">{t("memberSince")}</span>
+                      <span className="text-sm text-text-secondary">
+                        {t("memberSince")}
+                      </span>
                       <p className="text-text-primary">
                         {formatDate(user.createdAt)}
                       </p>
@@ -506,9 +528,12 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
                   <div className="flex items-center gap-3">
                     <Star size={18} className="text-primary-green" />
                     <div>
-                      <span className="text-sm text-text-secondary">{t("rating")}</span>
+                      <span className="text-sm text-text-secondary">
+                        {t("rating")}
+                      </span>
                       <p className="text-text-primary">
-                        {user.rating.toFixed(1)} ({user.reviewCount} {t("reviews")})
+                        {user.rating.toFixed(1)} ({user.reviewCount}{" "}
+                        {t("reviews")})
                       </p>
                     </div>
                   </div>
@@ -522,29 +547,41 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
                 </h3>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-text-secondary">{t("verified")}</span>
+                    <span className="text-sm text-text-secondary">
+                      {t("verified")}
+                    </span>
                     <div className="flex items-center gap-1">
                       {user.isVerified ? (
                         <>
                           <Shield size={16} className="text-primary-green" />
-                          <span className="text-sm text-primary-green">{t("yes")}</span>
+                          <span className="text-sm text-primary-green">
+                            {t("yes")}
+                          </span>
                         </>
                       ) : (
-                        <span className="text-sm text-text-secondary">{t("no")}</span>
+                        <span className="text-sm text-text-secondary">
+                          {t("no")}
+                        </span>
                       )}
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-text-secondary">{t("phoneVisible")}</span>
+                    <span className="text-sm text-text-secondary">
+                      {t("phoneVisible")}
+                    </span>
                     <div className="flex items-center gap-1">
                       {user.phoneVisible ? (
                         <>
                           <Phone size={16} className="text-primary-green" />
-                          <span className="text-sm text-primary-green">{t("yes")}</span>
+                          <span className="text-sm text-primary-green">
+                            {t("yes")}
+                          </span>
                         </>
                       ) : (
-                        <span className="text-sm text-text-secondary">{t("no")}</span>
+                        <span className="text-sm text-text-secondary">
+                          {t("no")}
+                        </span>
                       )}
                     </div>
                   </div>

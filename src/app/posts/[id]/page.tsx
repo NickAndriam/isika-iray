@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { getCategoryTranslationKey } from "@/lib/categoryUtils";
 import { mockPosts } from "@/data/mockData";
 import {
   ArrowLeft,
@@ -253,7 +254,7 @@ export default function PostDetailsPage({ params }: PostDetailsPageProps) {
             {/* Category and Type */}
             <div className="flex items-center gap-2">
               <span className="px-2 py-1 bg-primary-green/10 text-primary-green text-xs font-medium rounded">
-                {post.category}
+                {t(getCategoryTranslationKey(post.category))}
               </span>
               <span
                 className={`

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { getCategoryTranslationKey } from "@/lib/categoryUtils";
 import { useAppStore } from "@/store/useAppStore";
 import { mockPosts, mockReviews } from "@/data/mockData";
 import {
@@ -39,13 +40,13 @@ export default function ProfilePage() {
 
   const handleLogout = () => {
     setCurrentUser(null);
-    window.location.href = "/onboarding";
+    window.location.href = "/";
   };
 
   // update both i18next runtime and your app store so the UI and persisted state change
   const handleLanguageChange = async (language: string) => {
     await i18n.changeLanguage(language);
-    setLanguage(language as any);
+    setLanguage(language as "mg" | "fr" | "en");
   };
 
   if (!currentUser) {
@@ -164,7 +165,7 @@ export default function ProfilePage() {
         )}
 
         {/* Contact Info */}
-        <div className="lg:grid lg:grid-cols-2 lg:gap-3 flex flex-col gap-2">
+        <div className="flex flex-wrap gap-2">
           {currentUser.phoneVisible && (
             <div className="flex items-center gap-2 p-2 bg-surface rounded-lg">
               <Phone size={16} className="text-primary-green" />
@@ -248,7 +249,9 @@ export default function ProfilePage() {
             <motion.button
               key={tab.id}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() =>
+                setActiveTab(tab.id as "posts" | "reviews" | "settings")
+              }
               className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-medium transition-colors ${
                 activeTab === tab.id
                   ? "text-primary-green border-b-2 border-primary-green"
@@ -306,7 +309,7 @@ export default function ProfilePage() {
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <span className="px-2 py-1 bg-primary-green/10 text-primary-green text-xs font-medium rounded">
-                      {post.category}
+                      {t(getCategoryTranslationKey(post.category))}
                     </span>
                     <span className="text-xs text-text-secondary">
                       {t(

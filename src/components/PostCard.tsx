@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
+import { getCategoryTranslationKey } from "@/lib/categoryUtils";
 import { Post } from "@/types";
 import {
   MapPin,
@@ -122,7 +123,7 @@ export default function PostCard({ post }: PostCardProps) {
       <div className="p-4">
         <div className="flex items-center gap-2 mb-2">
           <span className="px-2 py-1 bg-primary-green/10 text-primary-green text-xs font-medium rounded">
-            {post.category}
+            {t(getCategoryTranslationKey(post.category))}
           </span>
           <span
             className={`

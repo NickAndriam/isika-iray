@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { getCategoryTranslationKey } from "@/lib/categoryUtils";
 import { Filter, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -40,19 +41,51 @@ export default function Header({
   const [tempFilters, setTempFilters] = useState<FilterState>(currentFilters);
   const { t } = useTranslation();
 
-  const categories = [
-    "all",
-    "Farming",
-    "Electronics",
-    "Tutoring",
-    "Health",
-    "Mechanics",
-    "Repairs",
-    "Automotive",
-    "Construction",
-    "Cooking",
-    "Language",
-    "Other",
+  const categoryOptions = [
+    { value: "all", labelKey: "category_all" },
+    { value: "Farming", labelKey: "category_farming" },
+    { value: "Electronics", labelKey: "category_electronics" },
+    { value: "Tutoring", labelKey: "category_tutoring" },
+    { value: "Health", labelKey: "category_health" },
+    { value: "Mechanics", labelKey: "category_mechanics" },
+    { value: "Repairs", labelKey: "category_repairs" },
+    { value: "Automotive", labelKey: "category_automotive" },
+    { value: "Construction", labelKey: "category_construction" },
+    { value: "Cooking", labelKey: "category_cooking" },
+    { value: "Language", labelKey: "category_language" },
+    { value: "Education", labelKey: "category_education" },
+    { value: "Computer", labelKey: "category_computer" },
+    { value: "Cleaning", labelKey: "category_cleaning" },
+    { value: "Gardening", labelKey: "category_gardening" },
+    { value: "Plumbing", labelKey: "category_plumbing" },
+    { value: "Electrical", labelKey: "category_electrical" },
+    { value: "Babysitting", labelKey: "category_babysitting" },
+    { value: "Delivery", labelKey: "category_delivery" },
+    { value: "Animal Care", labelKey: "category_animal" },
+    { value: "Hair Salon", labelKey: "category_hair" },
+    { value: "Beauty", labelKey: "category_beauty" },
+    { value: "Sport", labelKey: "category_sport" },
+    { value: "Music", labelKey: "category_music" },
+    { value: "Translation", labelKey: "category_translation" },
+    { value: "Accounting", labelKey: "category_accounting" },
+    { value: "Law", labelKey: "category_law" },
+    { value: "Photography", labelKey: "category_photography" },
+    { value: "Event Planning", labelKey: "category_event" },
+    { value: "Design", labelKey: "category_design" },
+    { value: "Writing", labelKey: "category_writing" },
+    { value: "Consulting", labelKey: "category_consulting" },
+    { value: "Veterinary", labelKey: "category_veterinary" },
+    { value: "Nursing", labelKey: "category_nursing" },
+    { value: "Elder Care", labelKey: "category_eldercare" },
+    { value: "Handyman", labelKey: "category_handyman" },
+    { value: "Moving", labelKey: "category_moving" },
+    { value: "Storage", labelKey: "category_storage" },
+    { value: "Documentation", labelKey: "category_documentation" },
+    { value: "Security", labelKey: "category_security" },
+    { value: "Finance", labelKey: "category_finance" },
+    { value: "Insurance", labelKey: "category_insurance" },
+    { value: "Tax Services", labelKey: "category_tax" },
+    { value: "Other", labelKey: "category_other" },
   ];
 
   const types = [
@@ -135,7 +168,8 @@ export default function Header({
               onClick={() => setShowFilterModal(true)}
               className={cn(
                 "relative",
-                getActiveFiltersCount() > 0 && "bg-primary-green hover:bg-primary-green/90"
+                getActiveFiltersCount() > 0 &&
+                  "bg-primary-green hover:bg-primary-green/90"
               )}
             >
               <Filter size={20} />
@@ -193,19 +227,27 @@ export default function Header({
                     <ChevronDown size={16} className="text-text-secondary" />
                   </h3>
                   <div className="grid grid-cols-2 gap-2">
-                    {categories.map((category) => (
+                    {categoryOptions.map((cat) => (
                       <Button
-                        key={category}
-                        variant={tempFilters.category === category ? "default" : "outline"}
+                        key={cat.value}
+                        variant={
+                          tempFilters.category === cat.value
+                            ? "default"
+                            : "outline"
+                        }
                         onClick={() =>
-                          setTempFilters({ ...tempFilters, category })
+                          setTempFilters({
+                            ...tempFilters,
+                            category: cat.value,
+                          })
                         }
                         className={cn(
                           "h-auto p-3 text-sm font-medium",
-                          tempFilters.category === category && "bg-primary-green hover:bg-primary-green/90"
+                          tempFilters.category === cat.value &&
+                            "bg-primary-green hover:bg-primary-green/90"
                         )}
                       >
-                        {category === "all" ? t("all") : category}
+                        {t(cat.labelKey)}
                       </Button>
                     ))}
                   </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { getCategoryTranslationKey } from "@/lib/categoryUtils";
 import { useAppStore } from "@/store/useAppStore";
 import { categories } from "@/data/mockData";
 import {
@@ -187,7 +188,9 @@ export default function PostPage() {
                         : "border-border hover:border-primary-green/50 text-black"
                     }`}
                   >
-                    <span className="text-sm font-medium">{category}</span>
+                    <span className="text-sm font-medium">
+                      {t(getCategoryTranslationKey(category))}
+                    </span>
                   </motion.button>
                 ))}
               </div>
