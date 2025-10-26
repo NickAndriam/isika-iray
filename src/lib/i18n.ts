@@ -189,6 +189,11 @@ const resources = {
       pending: "Miandry",
       approved: "Ekena",
       blocked: "Sakanina",
+
+      // Post Details
+      postDetails: "Fampahalalana momba ny post",
+      postedBy: "Nomen'i",
+      contactUser: "Mifandray amin'ny mpampiasa",
     },
   },
   fr: {
@@ -379,6 +384,11 @@ const resources = {
       pending: "En attente",
       approved: "Approuvé",
       blocked: "Bloqué",
+
+      // Post Details
+      postDetails: "Détails de la publication",
+      postedBy: "Publié par",
+      contactUser: "Contacter l'utilisateur",
     },
   },
   en: {
@@ -567,6 +577,11 @@ const resources = {
       pending: "Pending",
       approved: "Approved",
       blocked: "Blocked",
+
+      // Post Details
+      postDetails: "Post Details",
+      postedBy: "Posted by",
+      contactUser: "Contact User",
     },
   },
 };

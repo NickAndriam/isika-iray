@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Isika iray - Fiaraha-miasa ho an'ny fahafinaretana",
+  title: "Isika iray - Fiaraha-miasa ho an'ny taninjanaka",
   description:
     "A revolutionary, mobile-first social-good platform built for Madagascar",
 };
