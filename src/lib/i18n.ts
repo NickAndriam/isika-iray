@@ -14,7 +14,7 @@ const resources = {
       // Onboarding
       welcome: "Tongasoa eto amin'ny Isika iray",
       welcomeSubtitle: "Fiaraha-miasa ho an'ny taninjanaka",
-      getStarted: "Hanomboka",
+      getStarted: "Hanokatra Kaonty",
       selectRole: "Fandraisana anjara",
       needHelp: "Mila fanampiana",
       canHelp: "Afaka manampy",
@@ -192,7 +192,7 @@ const resources = {
 
       // Post Details
       postDetails: "Fampahalalana momba ny post",
-      postedBy: "Nomen'i",
+      postedBy: "Kaonty",
       contactUser: "Mifandray amin'ny mpampiasa",
 
       // User Profile
@@ -218,15 +218,15 @@ const resources = {
       // Login Page
       login: "Hiditra",
       password: "Tenimiafina",
-      emailPlaceholder: "Ampio ny adiresy mailakao",
-      passwordPlaceholder: "Ampio ny tenimiafinao",
+      emailPlaceholder: "Adiresy mailaka",
+      passwordPlaceholder: "Teny miafina",
       loginToYourAccount: "Hiditra ao amin'ny kaontinao",
       invalidCredentials: "Adiresy mailaka na tenimiafina tsy marina",
       loginError: "Fahadisoana amin'ny fidirana",
       loggingIn: "Miandry...",
       tryDemoAccounts: "Andramo amin'ny kaonty demo",
       dontHaveAccount: "Tsy manana kaonty?",
-      signUp: "Misoratra anarana",
+      signUp: "Hisoratra anarana",
 
       // Community Pages
       communityPost: "Vaovao fiaraha-miasa",

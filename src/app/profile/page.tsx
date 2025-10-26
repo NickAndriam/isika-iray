@@ -1,41 +1,50 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { useAppStore } from '@/store/useAppStore';
-import { mockPosts, mockReviews } from '@/data/mockData';
-import { 
-  Edit, 
-  Settings, 
-  LogOut, 
-  Star, 
-  MapPin, 
-  Phone, 
-  Mail, 
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { useAppStore } from "@/store/useAppStore";
+import { mockPosts, mockReviews } from "@/data/mockData";
+import {
+  Edit,
+  Settings,
+  LogOut,
+  Star,
+  MapPin,
+  Phone,
+  Mail,
   Facebook,
   Shield,
   Award,
   Building,
   User,
   Heart,
-  MessageCircle
-} from 'lucide-react';
+  MessageCircle,
+} from "lucide-react";
 
 export default function ProfilePage() {
-  const [activeTab, setActiveTab] = useState<'posts' | 'reviews' | 'settings'>('posts');
-  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<"posts" | "reviews" | "settings">(
+    "posts"
+  );
+  // include i18n to actually change the runtime language
+  const { t, i18n } = useTranslation();
   const { currentUser, setCurrentUser, setLanguage } = useAppStore();
 
-  const userPosts = currentUser ? mockPosts.filter(post => post.userId === currentUser.id) : [];
-  const userReviews = currentUser ? mockReviews.filter(review => review.revieweeId === currentUser.id) : [];
+  const userPosts = currentUser
+    ? mockPosts.filter((post) => post.userId === currentUser.id)
+    : [];
+  const userReviews = currentUser
+    ? mockReviews.filter((review) => review.revieweeId === currentUser.id)
+    : [];
 
   const handleLogout = () => {
     setCurrentUser(null);
-    window.location.href = '/onboarding';
+    window.location.href = "/onboarding";
   };
 
-  const handleLanguageChange = (language: string) => {
+  // update both i18next runtime and your app store so the UI and persisted state change
+  const handleLanguageChange = async (language: string) => {
+    await i18n.changeLanguage(language);
     setLanguage(language as any);
   };
 
@@ -49,17 +58,17 @@ export default function ProfilePage() {
         >
           <User size={48} className="text-text-secondary mx-auto mb-4" />
           <h2 className="text-lg font-medium text-text-primary mb-2">
-            {t('loginRequired')}
+            {t("loginRequired")}
           </h2>
           <p className="text-text-secondary mb-4">
-            {t('loginRequiredDescription')}
+            {t("loginRequiredDescription")}
           </p>
           <motion.button
             whileTap={{ scale: 0.95 }}
-            onClick={() => window.location.href = '/onboarding'}
+            onClick={() => (window.location.href = "/login")}
             className="bg-primary-green text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-green/90 transition-colors"
           >
-            {t('getStarted')}
+            {t("login")}
           </motion.button>
         </motion.div>
       </div>
@@ -78,10 +87,10 @@ export default function ProfilePage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-xl font-bold text-text-primary">
-                {t('myProfile')}
+                {t("myProfile")}
               </h1>
               <p className="text-sm text-text-secondary">
-                {t('manageYourAccount')}
+                {t("manageYourAccount")}
               </p>
             </div>
             <motion.button
@@ -102,33 +111,35 @@ export default function ProfilePage() {
       >
         <div className="flex items-start gap-4 mb-4">
           <div className="w-20 h-20 bg-primary-green/20 rounded-full flex items-center justify-center">
-            {currentUser.accountType === 'company' ? (
+            {currentUser.accountType === "company" ? (
               <Building size={32} className="text-primary-green" />
             ) : (
               <User size={32} className="text-primary-green" />
             )}
           </div>
-          
+
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <h2 className="text-xl font-bold text-text-primary">
-                {currentUser.accountType === 'company' ? currentUser.businessName : currentUser.name}
+                {currentUser.accountType === "company"
+                  ? currentUser.businessName
+                  : currentUser.name}
               </h2>
               {currentUser.isVerified && (
                 <Shield size={20} className="text-primary-green" />
               )}
             </div>
-            
+
             <div className="flex items-center gap-2 mb-2">
               <Star size={16} className="text-primary-gold" />
               <span className="font-medium text-text-primary">
                 {currentUser.rating.toFixed(1)}
               </span>
               <span className="text-text-secondary">
-                ({currentUser.reviewCount} {t('reviews')})
+                ({currentUser.reviewCount} {t("reviews")})
               </span>
             </div>
-            
+
             <div className="flex items-center gap-1 text-sm text-text-secondary">
               <MapPin size={14} />
               <span>{currentUser.region}</span>
@@ -153,21 +164,25 @@ export default function ProfilePage() {
         )}
 
         {/* Contact Info */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="lg:grid lg:grid-cols-2 lg:gap-3 flex flex-col gap-2">
           {currentUser.phoneVisible && (
             <div className="flex items-center gap-2 p-2 bg-surface rounded-lg">
               <Phone size={16} className="text-primary-green" />
-              <span className="text-sm text-text-primary">{currentUser.phoneNumber}</span>
+              <span className="text-sm text-text-primary">
+                {currentUser.phoneNumber}
+              </span>
             </div>
           )}
-          
+
           {currentUser.email && (
             <div className="flex items-center gap-2 p-2 bg-surface rounded-lg">
               <Mail size={16} className="text-primary-green" />
-              <span className="text-sm text-text-primary">{currentUser.email}</span>
+              <span className="text-sm text-text-primary">
+                {currentUser.email}
+              </span>
             </div>
           )}
-          
+
           {currentUser.facebookLink && (
             <div className="flex items-center gap-2 p-2 bg-surface rounded-lg">
               <Facebook size={16} className="text-primary-green" />
@@ -185,10 +200,13 @@ export default function ProfilePage() {
         className="bg-white border-b border-border p-4"
       >
         <h3 className="font-semibold text-text-primary mb-3">
-          {currentUser.accountType === 'company' ? t('services') : t('skills')}
+          {currentUser.accountType === "company" ? t("services") : t("skills")}
         </h3>
         <div className="flex flex-wrap gap-2">
-          {(currentUser.accountType === 'company' ? currentUser.services : currentUser.skills)?.map((skill, index) => (
+          {(currentUser.accountType === "company"
+            ? currentUser.services
+            : currentUser.skills
+          )?.map((skill, index) => (
             <span
               key={index}
               className="px-3 py-1 bg-primary-green/10 text-primary-green text-sm font-medium rounded-full"
@@ -208,9 +226,24 @@ export default function ProfilePage() {
       >
         <div className="flex">
           {[
-            { id: 'posts', label: t('myPosts'), icon: MessageCircle, count: userPosts.length },
-            { id: 'reviews', label: t('myRatings'), icon: Star, count: userReviews.length },
-            { id: 'settings', label: t('settings'), icon: Settings, count: null },
+            {
+              id: "posts",
+              label: t("myPosts"),
+              icon: MessageCircle,
+              count: userPosts.length,
+            },
+            {
+              id: "reviews",
+              label: t("myRatings"),
+              icon: Star,
+              count: userReviews.length,
+            },
+            {
+              id: "settings",
+              label: t("settings"),
+              icon: Settings,
+              count: null,
+            },
           ].map((tab) => (
             <motion.button
               key={tab.id}
@@ -218,8 +251,8 @@ export default function ProfilePage() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-medium transition-colors ${
                 activeTab === tab.id
-                  ? 'text-primary-green border-b-2 border-primary-green'
-                  : 'text-text-secondary hover:text-primary-green'
+                  ? "text-primary-green border-b-2 border-primary-green"
+                  : "text-text-secondary hover:text-primary-green"
               }`}
             >
               <tab.icon size={16} />
@@ -236,7 +269,7 @@ export default function ProfilePage() {
 
       {/* Tab Content */}
       <div className="p-4">
-        {activeTab === 'posts' && (
+        {activeTab === "posts" && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -244,19 +277,22 @@ export default function ProfilePage() {
           >
             {userPosts.length === 0 ? (
               <div className="text-center py-8">
-                <MessageCircle size={32} className="text-text-secondary mx-auto mb-2" />
+                <MessageCircle
+                  size={32}
+                  className="text-text-secondary mx-auto mb-2"
+                />
                 <h3 className="text-lg font-medium text-text-primary mb-2">
-                  {t('noPostsYet')}
+                  {t("noPostsYet")}
                 </h3>
                 <p className="text-text-secondary mb-4">
-                  {t('noPostsYetDescription')}
+                  {t("noPostsYetDescription")}
                 </p>
                 <motion.button
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => window.location.href = '/post'}
+                  onClick={() => (window.location.href = "/post")}
                   className="bg-primary-green text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-green/90 transition-colors"
                 >
-                  {t('createFirstPost')}
+                  {t("createFirstPost")}
                 </motion.button>
               </div>
             ) : (
@@ -273,31 +309,40 @@ export default function ProfilePage() {
                       {post.category}
                     </span>
                     <span className="text-xs text-text-secondary">
-                      {t(post.type === 'help_request' ? 'helpRequest' : 'helpOffer')}
+                      {t(
+                        post.type === "help_request"
+                          ? "helpRequest"
+                          : "helpOffer"
+                      )}
                     </span>
-                    <span className={`text-xs font-medium ${
-                      post.status === 'open' ? 'text-success' : 
-                      post.status === 'solved' ? 'text-text-secondary' : 'text-error'
-                    }`}>
+                    <span
+                      className={`text-xs font-medium ${
+                        post.status === "open"
+                          ? "text-success"
+                          : post.status === "solved"
+                          ? "text-text-secondary"
+                          : "text-error"
+                      }`}
+                    >
                       {t(post.status)}
                     </span>
                   </div>
-                  
+
                   <h4 className="font-semibold text-text-primary mb-1">
                     {post.title}
                   </h4>
-                  
+
                   <p className="text-sm text-text-secondary line-clamp-2 mb-2">
                     {post.description}
                   </p>
-                  
+
                   <div className="flex items-center justify-between text-xs text-text-muted">
                     <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                     <motion.button
                       whileTap={{ scale: 0.95 }}
                       className="text-primary-green hover:text-primary-green/80 transition-colors"
                     >
-                      {t('edit')}
+                      {t("edit")}
                     </motion.button>
                   </div>
                 </motion.div>
@@ -306,7 +351,7 @@ export default function ProfilePage() {
           </motion.div>
         )}
 
-        {activeTab === 'reviews' && (
+        {activeTab === "reviews" && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -316,10 +361,10 @@ export default function ProfilePage() {
               <div className="text-center py-8">
                 <Star size={32} className="text-text-secondary mx-auto mb-2" />
                 <h3 className="text-lg font-medium text-text-primary mb-2">
-                  {t('noReviewsYet')}
+                  {t("noReviewsYet")}
                 </h3>
                 <p className="text-text-secondary">
-                  {t('noReviewsYetDescription')}
+                  {t("noReviewsYetDescription")}
                 </p>
               </div>
             ) : (
@@ -338,7 +383,9 @@ export default function ProfilePage() {
                           key={i}
                           size={16}
                           className={`${
-                            i < review.rating ? 'text-primary-gold fill-current' : 'text-border'
+                            i < review.rating
+                              ? "text-primary-gold fill-current"
+                              : "text-border"
                           }`}
                         />
                       ))}
@@ -347,11 +394,11 @@ export default function ProfilePage() {
                       {new Date(review.createdAt).toLocaleDateString()}
                     </span>
                   </div>
-                  
+
                   <p className="text-sm text-text-primary mb-2">
                     {review.comment}
                   </p>
-                  
+
                   <div className="flex items-center gap-1 text-xs text-text-muted">
                     <Heart size={12} />
                     <span>{t(review.type)}</span>
@@ -362,7 +409,7 @@ export default function ProfilePage() {
           </motion.div>
         )}
 
-        {activeTab === 'settings' && (
+        {activeTab === "settings" && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -371,13 +418,13 @@ export default function ProfilePage() {
             {/* Language Settings */}
             <div className="bg-white border border-border rounded-lg p-4">
               <h3 className="font-semibold text-text-primary mb-3">
-                {t('language')}
+                {t("language")}
               </h3>
               <div className="space-y-2">
                 {[
-                  { code: 'mg', name: 'Malagasy', flag: '🇲🇬' },
-                  { code: 'fr', name: 'Français', flag: '🇫🇷' },
-                  { code: 'en', name: 'English', flag: '🇺🇸' },
+                  { code: "mg", name: "Malagasy", flag: "🇲🇬" },
+                  { code: "fr", name: "Français", flag: "🇫🇷" },
+                  { code: "en", name: "English", flag: "🇺🇸" },
                 ].map((lang) => (
                   <motion.button
                     key={lang.code}
@@ -395,7 +442,7 @@ export default function ProfilePage() {
             {/* Account Actions */}
             <div className="bg-white border border-border rounded-lg p-4">
               <h3 className="font-semibold text-text-primary mb-3">
-                {t('account')}
+                {t("account")}
               </h3>
               <div className="space-y-2">
                 <motion.button
@@ -403,16 +450,16 @@ export default function ProfilePage() {
                   className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-surface transition-colors text-left"
                 >
                   <Edit size={20} className="text-primary-green" />
-                  <span className="text-text-primary">{t('editProfile')}</span>
+                  <span className="text-text-primary">{t("editProfile")}</span>
                 </motion.button>
-                
+
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={handleLogout}
                   className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-surface transition-colors text-left"
                 >
                   <LogOut size={20} className="text-error" />
-                  <span className="text-error">{t('logout')}</span>
+                  <span className="text-error">{t("logout")}</span>
                 </motion.button>
               </div>
             </div>

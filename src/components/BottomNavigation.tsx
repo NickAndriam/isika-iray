@@ -22,7 +22,7 @@ export default function BottomNavigation() {
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="fixed bottom-0 left-0 right-0 bg-white border border-border z-50 rounded-full mx-4 mb-1 shadow-2xl"
+      className="fixed bottom-0 left-0 right-0 bg-white border border-border z-50 rounded-t-4xl shadow-2xl"
     >
       <div className="flex items-center justify-around py-2">
         {navItems.map(({ href, icon: Icon, label }) => {

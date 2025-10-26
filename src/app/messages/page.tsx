@@ -91,10 +91,10 @@ export default function MessagesPage() {
           </p>
           <motion.button
             whileTap={{ scale: 0.95 }}
-            onClick={() => (window.location.href = "/onboarding")}
+            onClick={() => (window.location.href = "/login")}
             className="bg-primary-green text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-green/90 transition-colors"
           >
-            {t("getStarted")}
+            {t("login")}
           </motion.button>
         </motion.div>
       </div>
