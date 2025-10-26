@@ -4,26 +4,33 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { getCategoryTranslationKey } from "@/lib/categoryUtils";
+import { formatDate } from "@/lib/dateUtils";
 import { useAppStore } from "@/store/useAppStore";
 import { mockPosts, mockReviews } from "@/data/mockData";
 import {
   Edit,
   Settings,
   LogOut,
-  Star,
   MapPin,
   Phone,
   Mail,
   Facebook,
   Shield,
   Award,
-  Building,
-  User,
   Heart,
   MessageCircle,
+  Star,
 } from "lucide-react";
+import PageHeader from "@/components/PageHeader";
+import UserAvatar from "@/components/UserAvatar";
+import TabNavigation from "@/components/TabNavigation";
+import RatingDisplay from "@/components/RatingDisplay";
+import LocationMap from "@/components/LocationMap";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<"posts" | "reviews" | "settings">(
     "posts"
   );
@@ -50,59 +57,25 @@ export default function ProfilePage() {
   };
 
   if (!currentUser) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-surface">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center p-8"
-        >
-          <User size={48} className="text-text-secondary mx-auto mb-4" />
-          <h2 className="text-lg font-medium text-text-primary mb-2">
-            {t("loginRequired")}
-          </h2>
-          <p className="text-text-secondary mb-4">
-            {t("loginRequiredDescription")}
-          </p>
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => (window.location.href = "/login")}
-            className="bg-primary-green text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-green/90 transition-colors"
-          >
-            {t("login")}
-          </motion.button>
-        </motion.div>
-      </div>
-    );
+    router.push("/login");
+    return <LoadingSpinner message={t("loginRequiredDescription")} />;
   }
 
   return (
     <div className="min-h-screen bg-surface">
       {/* Header */}
-      <motion.header
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="bg-white border-b border-border sticky top-0 z-40"
-      >
-        <div className="px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-bold text-text-primary">
-                {t("myProfile")}
-              </h1>
-              <p className="text-sm text-text-secondary">
-                {t("manageYourAccount")}
-              </p>
-            </div>
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              className="p-2 rounded-lg bg-surface hover:bg-border transition-colors"
-            >
-              <Edit size={20} className="text-text-secondary" />
-            </motion.button>
-          </div>
-        </div>
-      </motion.header>
+      <PageHeader
+        title={t("myProfile")}
+        subtitle={t("manageYourAccount")}
+        actions={
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            className="p-2 rounded-lg bg-surface hover:bg-border transition-colors"
+          >
+            <Edit size={20} className="text-text-secondary" />
+          </motion.button>
+        }
+      />
 
       {/* Profile Header */}
       <motion.section
@@ -111,13 +84,7 @@ export default function ProfilePage() {
         className="bg-white border-b border-border p-4"
       >
         <div className="flex items-start gap-4 mb-4">
-          <div className="w-20 h-20 bg-primary-green/20 rounded-full flex items-center justify-center">
-            {currentUser.accountType === "company" ? (
-              <Building size={32} className="text-primary-green" />
-            ) : (
-              <User size={32} className="text-primary-green" />
-            )}
-          </div>
+          <UserAvatar user={currentUser} size={80} />
 
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
@@ -131,14 +98,12 @@ export default function ProfilePage() {
               )}
             </div>
 
-            <div className="flex items-center gap-2 mb-2">
-              <Star size={16} className="text-primary-gold" />
-              <span className="font-medium text-text-primary">
-                {currentUser.rating.toFixed(1)}
-              </span>
-              <span className="text-text-secondary">
-                ({currentUser.reviewCount} {t("reviews")})
-              </span>
+            <div className="mb-2">
+              <RatingDisplay
+                rating={currentUser.rating}
+                reviewCount={currentUser.reviewCount}
+                size="md"
+              />
             </div>
 
             <div className="flex items-center gap-1 text-sm text-text-secondary">
@@ -229,73 +194,41 @@ export default function ProfilePage() {
           <h3 className="font-semibold text-text-primary mb-3">
             {t("location")}
           </h3>
-          <div className="h-64 bg-surface border border-border rounded-lg flex items-center justify-center relative">
-            <div className="text-center">
-              <MapPin size={48} className="text-primary-green mx-auto mb-2" />
-              <p className="text-sm text-text-primary font-medium mb-1">
-                {currentUser.region}
-                {currentUser.commune && `, ${currentUser.commune}`}
-              </p>
-              <p className="text-xs text-text-secondary">
-                {currentUser.coordinates.lat.toFixed(4)},{" "}
-                {currentUser.coordinates.lng.toFixed(4)}
-              </p>
-            </div>
-          </div>
+          <LocationMap
+            region={currentUser.region}
+            commune={currentUser.commune}
+            coordinates={currentUser.coordinates}
+          />
         </motion.section>
       )}
 
       {/* Tabs */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="bg-white border-b border-border"
-      >
-        <div className="flex">
-          {[
-            {
-              id: "posts",
-              label: t("myPosts"),
-              icon: MessageCircle,
-              count: userPosts.length,
-            },
-            {
-              id: "reviews",
-              label: t("myRatings"),
-              icon: Star,
-              count: userReviews.length,
-            },
-            {
-              id: "settings",
-              label: t("settings"),
-              icon: Settings,
-              count: null,
-            },
-          ].map((tab) => (
-            <motion.button
-              key={tab.id}
-              whileTap={{ scale: 0.95 }}
-              onClick={() =>
-                setActiveTab(tab.id as "posts" | "reviews" | "settings")
-              }
-              className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-medium transition-colors ${
-                activeTab === tab.id
-                  ? "text-primary-green border-b-2 border-primary-green"
-                  : "text-text-secondary hover:text-primary-green"
-              }`}
-            >
-              <tab.icon size={16} />
-              <span>{tab.label}</span>
-              {tab.count !== null && (
-                <span className="bg-surface text-text-secondary text-xs px-2 py-1 rounded-full">
-                  {tab.count}
-                </span>
-              )}
-            </motion.button>
-          ))}
-        </div>
-      </motion.div>
+      <TabNavigation
+        tabs={[
+          {
+            id: "posts",
+            label: t("myPosts"),
+            icon: MessageCircle,
+            count: userPosts.length,
+          },
+          {
+            id: "reviews",
+            label: t("myRatings"),
+            icon: Star,
+            count: userReviews.length,
+          },
+          {
+            id: "settings",
+            label: t("settings"),
+            icon: Settings,
+            count: null,
+          },
+        ]}
+        activeTab={activeTab}
+        onTabChange={(tab) =>
+          setActiveTab(tab as "posts" | "reviews" | "settings")
+        }
+      />
 
       {/* Tab Content */}
       <div className="p-4">
@@ -367,7 +300,7 @@ export default function ProfilePage() {
                   </p>
 
                   <div className="flex items-center justify-between text-xs text-text-muted">
-                    <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                    <span>{formatDate(post.createdAt)}</span>
                     <motion.button
                       whileTap={{ scale: 0.95 }}
                       className="text-primary-green hover:text-primary-green/80 transition-colors"
@@ -421,7 +354,7 @@ export default function ProfilePage() {
                       ))}
                     </div>
                     <span className="text-sm text-text-secondary">
-                      {new Date(review.createdAt).toLocaleDateString()}
+                      {formatDate(review.createdAt)}
                     </span>
                   </div>
 

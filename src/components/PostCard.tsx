@@ -5,17 +5,12 @@ import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 import { getCategoryTranslationKey } from "@/lib/categoryUtils";
 import { getPostTypeTranslationKey, getPostTypeColors } from "@/lib/postUtils";
+import { formatRelativeTime } from "@/lib/dateUtils";
 import { Post } from "@/types";
-import {
-  MapPin,
-  Clock,
-  Phone,
-  MessageCircle,
-  Star,
-  Shield,
-  Building,
-  User,
-} from "lucide-react";
+import { MapPin, Clock, Star, Shield } from "lucide-react";
+import UserAvatar from "./UserAvatar";
+import ContactActions from "./ContactActions";
+import UrgencyBadge from "./UrgencyBadge";
 
 interface PostCardProps {
   post: Post;
@@ -24,31 +19,6 @@ interface PostCardProps {
 export default function PostCard({ post }: PostCardProps) {
   const { t } = useTranslation();
   const router = useRouter();
-
-  const getUrgencyColor = (urgency: string) => {
-    switch (urgency) {
-      case "high":
-        return "bg-error text-white";
-      case "medium":
-        return "bg-warning text-white";
-      case "low":
-        return "bg-success text-white";
-      default:
-        return "bg-text-secondary text-white";
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60 * 60)
-    );
-
-    if (diffInHours < 1) return t("justNow");
-    if (diffInHours < 24) return `${diffInHours}h ${t("ago")}`;
-    return `${Math.floor(diffInHours / 24)}d ${t("ago")}`;
-  };
 
   const handleCardClick = () => {
     router.push(`/posts/${post.id}`);
@@ -64,13 +34,7 @@ export default function PostCard({ post }: PostCardProps) {
       <div className="p-4 border-b border-border">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary-green/20 rounded-full flex items-center justify-center">
-              {post.user.accountType === "company" ? (
-                <Building size={20} className="text-primary-green" />
-              ) : (
-                <User size={20} className="text-primary-green" />
-              )}
-            </div>
+            <UserAvatar user={post.user} size={40} />
             <div>
               <div className="flex items-center gap-2">
                 <motion.button
@@ -97,13 +61,7 @@ export default function PostCard({ post }: PostCardProps) {
           </div>
 
           <div className="flex flex-col items-center gap-2">
-            <span
-              className={`px-2 py-1 rounded-full text-xs font-medium ${getUrgencyColor(
-                post.urgency
-              )}`}
-            >
-              {t(post.urgency)}
-            </span>
+            <UrgencyBadge urgency={post.urgency} />
           </div>
         </div>
 
@@ -115,7 +73,7 @@ export default function PostCard({ post }: PostCardProps) {
           </div>
           <div className="flex items-center gap-1">
             <Clock size={14} />
-            <span>{formatDate(post.createdAt)}</span>
+            <span>{formatRelativeTime(post.createdAt, t)}</span>
           </div>
         </div>
       </div>
@@ -181,28 +139,12 @@ export default function PostCard({ post }: PostCardProps) {
         )}
 
         {/* Contact Actions */}
-        <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
-          {post.contactMethod === "phone" || post.contactMethod === "both" ? (
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={() => window.open(`tel:${post.user.phoneNumber}`)}
-              className="flex-1 flex items-center justify-center gap-2 py-2 px-4 bg-primary-green text-white rounded-lg text-sm font-medium hover:bg-primary-green/90 transition-colors"
-            >
-              <Phone size={16} />
-              {t("call")}
-            </motion.button>
-          ) : null}
-
-          {post.contactMethod === "message" || post.contactMethod === "both" ? (
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={() => router.push(`/messages?user=${post.userId}`)}
-              className="flex-1 flex items-center justify-center gap-2 py-2 px-4 border border-primary-green text-primary-green rounded-lg text-sm font-medium hover:bg-primary-green/10 transition-colors"
-            >
-              <MessageCircle size={16} />
-              {t("message")}
-            </motion.button>
-          ) : null}
+        <div onClick={(e) => e.stopPropagation()}>
+          <ContactActions
+            phoneNumber={post.user.phoneNumber}
+            contactMethod={post.contactMethod}
+            userId={post.userId}
+          />
         </div>
       </div>
     </motion.article>
