@@ -83,7 +83,7 @@ const resources = {
       communityBoard: "Tabilao fiaraha-miasa",
       dailyTips: "Torolalana isan'andro",
       storyOfDay: "Tantara amin'ny andro",
-      expertContent: "Votoaty manam-pahaizana",
+      expertContent: "Votoaty ny manam-pahaizana",
 
       // Common
       loading: "Miandry...",
@@ -141,7 +141,7 @@ const resources = {
       justNow: "Vao izao",
       ago: "lasa",
       viewAll: "Hijery ny rehetra",
-      by: "nomen'i",
+      by: "Nosoratan'i",
       featured: "Voasongadina",
       viewMoreContent: "Hijery bebe kokoa",
       interactiveMap: "Sarintany mihetsika",
@@ -236,7 +236,6 @@ const resources = {
       allPosts: "Vaovao rehetra",
       tip: "Torolalana",
       story: "Tantara",
-      expertContent: "Votoaty manam-pahaizana",
     },
   },
   fr: {
@@ -474,7 +473,6 @@ const resources = {
       allPosts: "Toutes les publications",
       tip: "Conseil",
       story: "Histoire",
-      expertContent: "Contenu d'expert",
     },
   },
   en: {
@@ -710,7 +708,6 @@ const resources = {
       allPosts: "All Posts",
       tip: "Tip",
       story: "Story",
-      expertContent: "Expert Content",
     },
   },
 };
