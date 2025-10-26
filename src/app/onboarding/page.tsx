@@ -9,6 +9,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useAppStore } from "@/store/useAppStore";
 import { User } from "@/types";
 import { categories } from "@/data/mockData";
+import LocationSelector from "@/components/LocationSelector";
 import {
   Heart,
   Users,
@@ -59,6 +60,7 @@ export default function OnboardingPage() {
         email: formData.email,
         skills: formData.skills || [],
         services: formData.services || [],
+        coordinates: formData.coordinates,
         rating: 0,
         reviewCount: 0,
         badges: [],
@@ -485,29 +487,19 @@ export default function OnboardingPage() {
                 <p className="text-xs text-text-secondary mb-3">
                   {t("addLocationDescription")}
                 </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <MapPin size={16} className="text-primary-green" />
-                    <input
-                      type="text"
-                      placeholder={t("searchLocation")}
-                      className="flex-1 p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
-                    />
-                  </div>
-                  <div className="h-48 bg-surface border border-border rounded-lg flex items-center justify-center">
-                    <div className="text-center text-text-secondary">
-                      <MapPin size={32} className="mx-auto mb-2" />
-                      <p className="text-sm">{t("setLocation")}</p>
-                      <p className="text-xs mt-1">{t("locationPrivacy")}</p>
-                    </div>
-                  </div>
-                  <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    className="w-full py-2 px-4 border border-primary-green text-primary-green rounded-lg text-sm font-medium hover:bg-primary-green/10 transition-colors"
-                  >
-                    {t("saveLocation")}
-                  </motion.button>
-                </div>
+                <LocationSelector
+                  currentLocation={
+                    formData.coordinates
+                      ? {
+                          lat: formData.coordinates.lat,
+                          lng: formData.coordinates.lng,
+                        }
+                      : undefined
+                  }
+                  onLocationSelect={(location) =>
+                    updateFormData("coordinates", location)
+                  }
+                />
               </div>
 
               {/* Skills Input - for everyone */}

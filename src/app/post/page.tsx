@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { getCategoryTranslationKey } from "@/lib/categoryUtils";
-import { useAuthStore } from "@/store/useAuthStore";
 import { categories } from "@/data/mockData";
 import {
   ArrowLeft,
@@ -30,7 +29,6 @@ export default function PostPage() {
   });
 
   const { t } = useTranslation();
-  const { currentUser } = useAuthStore();
   const router = useRouter();
 
   // Scroll to top when step changes
