@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { getCategoryTranslationKey } from "@/lib/categoryUtils";
 import { getPostTypeTranslationKey, getPostTypeColors } from "@/lib/postUtils";
-import { User, Post, Review } from "@/types";
+// import { User, Post, Review } from "@/types";
 import { mockUsers, mockPosts, mockReviews } from "@/data/mockData";
 import {
   ArrowLeft,
@@ -24,7 +24,6 @@ import {
   Award,
   Calendar,
   Eye,
-  ThumbsUp,
 } from "lucide-react";
 
 interface UserProfilePageProps {
@@ -80,10 +79,6 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
     return date.toLocaleDateString();
   };
 
-  const getAccountTypeIcon = (accountType: string) => {
-    return accountType === "company" ? Building : UserIcon;
-  };
-
   if (!user) {
     return (
       <div className="min-h-screen bg-surface flex items-center justify-center">
@@ -95,7 +90,7 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
     );
   }
 
-  const AccountIcon = getAccountTypeIcon(user.accountType);
+  const AccountIcon = user.accountType === "company" ? Building : UserIcon;
 
   return (
     <div className="min-h-screen bg-surface">
@@ -226,6 +221,33 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
           </div>
         </motion.section>
 
+        {/* Location Map */}
+        {user.coordinates && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="bg-white border-b border-border p-4"
+          >
+            <h3 className="font-semibold text-text-primary mb-3">
+              {t("location")}
+            </h3>
+            <div className="h-64 bg-surface border border-border rounded-lg flex items-center justify-center relative">
+              <div className="text-center">
+                <MapPin size={48} className="text-primary-green mx-auto mb-2" />
+                <p className="text-sm text-text-primary font-medium mb-1">
+                  {user.region}
+                  {user.commune && `, ${user.commune}`}
+                </p>
+                <p className="text-xs text-text-secondary">
+                  {user.coordinates.lat.toFixed(4)},{" "}
+                  {user.coordinates.lng.toFixed(4)}
+                </p>
+              </div>
+            </div>
+          </motion.section>
+        )}
+
         {/* Skills/Services */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
@@ -316,7 +338,9 @@ export default function UserProfilePage({ params }: UserProfilePageProps) {
               <motion.button
                 key={tab.id}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() =>
+                  setActiveTab(tab.id as "posts" | "reviews" | "about")
+                }
                 className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-medium transition-colors ${
                   activeTab === tab.id
                     ? "text-primary-green border-b-2 border-primary-green"

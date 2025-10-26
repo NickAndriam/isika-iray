@@ -301,6 +301,17 @@ const resources = {
       additionalInfoDescription:
         "Ampio ny fampahalalana fanampiny (tsy voatery)",
       skip: "Tsy hanao",
+
+      // Map Location
+      addLocation: "Ampio toerana",
+      addLocationDescription:
+        "Ampio ny toerananao amin'ny sarintany (tsy voatery)",
+      setLocation: "Hanoritra toerana",
+      searchLocation: "Hikaroka...",
+      saveLocation: "Tehirizina",
+      clearLocation: "Hanala toerana",
+      noLocationSet: "Tsy misy toerana voafaritra",
+      locationPrivacy: "Azy irery ihany no hijerena ny toeranao",
     },
   },
   fr: {
@@ -604,6 +615,17 @@ const resources = {
       additionalInfoDescription:
         "Ajoutez des informations supplémentaires (optionnel)",
       skip: "Passer",
+
+      // Map Location
+      addLocation: "Ajouter un emplacement",
+      addLocationDescription:
+        "Ajoutez votre emplacement sur la carte (optionnel)",
+      setLocation: "Définir l'emplacement",
+      searchLocation: "Rechercher...",
+      saveLocation: "Enregistrer",
+      clearLocation: "Effacer l'emplacement",
+      noLocationSet: "Aucun emplacement défini",
+      locationPrivacy: "Seul vous pouvez voir votre emplacement",
     },
   },
   en: {
@@ -903,6 +925,16 @@ const resources = {
       additionalInfo: "Additional Information",
       additionalInfoDescription: "Add additional information (optional)",
       skip: "Skip",
+
+      // Map Location
+      addLocation: "Add Location",
+      addLocationDescription: "Add your location on the map (optional)",
+      setLocation: "Set Location",
+      searchLocation: "Search...",
+      saveLocation: "Save",
+      clearLocation: "Clear Location",
+      noLocationSet: "No location set",
+      locationPrivacy: "Only you can see your location",
     },
   },
 };

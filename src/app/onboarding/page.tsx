@@ -17,6 +17,7 @@ import {
   Facebook,
   Mail,
   Instagram,
+  MapPin,
 } from "lucide-react";
 
 export default function OnboardingPage() {
@@ -473,6 +474,39 @@ export default function OnboardingPage() {
                   </div>
                 </div>
               )}
+
+              {/* Location on Map - for everyone */}
+              <div>
+                <label className="block text-sm font-medium text-text-primary mb-2">
+                  {t("addLocation")} ({t("optional")})
+                </label>
+                <p className="text-xs text-text-secondary mb-3">
+                  {t("addLocationDescription")}
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <MapPin size={16} className="text-primary-green" />
+                    <input
+                      type="text"
+                      placeholder={t("searchLocation")}
+                      className="flex-1 p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
+                    />
+                  </div>
+                  <div className="h-48 bg-surface border border-border rounded-lg flex items-center justify-center">
+                    <div className="text-center text-text-secondary">
+                      <MapPin size={32} className="mx-auto mb-2" />
+                      <p className="text-sm">{t("setLocation")}</p>
+                      <p className="text-xs mt-1">{t("locationPrivacy")}</p>
+                    </div>
+                  </div>
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full py-2 px-4 border border-primary-green text-primary-green rounded-lg text-sm font-medium hover:bg-primary-green/10 transition-colors"
+                  >
+                    {t("saveLocation")}
+                  </motion.button>
+                </div>
+              </div>
 
               {/* Skills Input - for everyone */}
               <div>

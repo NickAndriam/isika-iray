@@ -218,6 +218,33 @@ export default function ProfilePage() {
         </div>
       </motion.section>
 
+      {/* Location Map */}
+      {currentUser.coordinates && (
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="bg-white border-b border-border p-4"
+        >
+          <h3 className="font-semibold text-text-primary mb-3">
+            {t("location")}
+          </h3>
+          <div className="h-64 bg-surface border border-border rounded-lg flex items-center justify-center relative">
+            <div className="text-center">
+              <MapPin size={48} className="text-primary-green mx-auto mb-2" />
+              <p className="text-sm text-text-primary font-medium mb-1">
+                {currentUser.region}
+                {currentUser.commune && `, ${currentUser.commune}`}
+              </p>
+              <p className="text-xs text-text-secondary">
+                {currentUser.coordinates.lat.toFixed(4)},{" "}
+                {currentUser.coordinates.lng.toFixed(4)}
+              </p>
+            </div>
+          </div>
+        </motion.section>
+      )}
+
       {/* Tabs */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

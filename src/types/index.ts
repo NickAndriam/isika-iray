@@ -21,6 +21,10 @@ export interface User {
   badges: Badge[];
   createdAt: string;
   isVerified: boolean;
+  coordinates?: {
+    lat: number;
+    lng: number;
+  };
 }
 
 export interface Badge {
