@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
@@ -14,12 +14,13 @@ import {
   Phone,
   MessageCircle,
   AlertCircle,
+  ShoppingBag,
 } from "lucide-react";
 
 export default function PostPage() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    type: "help_request" as "help_request" | "help_offer",
+    type: "help_request" as "help_request" | "help_offer" | "sell",
     category: "",
     title: "",
     description: "",
@@ -32,6 +33,11 @@ export default function PostPage() {
   const { t } = useTranslation();
   const { currentUser } = useAppStore();
   const router = useRouter();
+
+  // Scroll to top when step changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [step]);
 
   const handleNext = () => {
     if (step < 3) {
@@ -51,7 +57,7 @@ export default function PostPage() {
     }
   };
 
-  const updateFormData = (field: string, value: any) => {
+  const updateFormData = (field: string, value: unknown) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -69,7 +75,7 @@ export default function PostPage() {
   };
 
   if (!currentUser) {
-    router.push("/onboarding");
+    router.push("/login");
     return null;
   }
 
@@ -143,6 +149,13 @@ export default function PostPage() {
                     description: t("helpOfferDescription"),
                     icon: MessageCircle,
                     color: "text-primary-green",
+                  },
+                  {
+                    type: "sell",
+                    title: t("sell"),
+                    description: t("sellDescription"),
+                    icon: ShoppingBag,
+                    color: "text-primary-gold",
                   },
                 ].map((option) => (
                   <motion.button
@@ -255,6 +268,47 @@ export default function PostPage() {
                     </div>
                   </motion.button>
                 </div>
+
+                {/* Hashtags */}
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-2">
+                    {t("addHashtags")} ({t("optional")})
+                  </label>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {formData.tags.map((tag) => (
+                      <motion.span
+                        key={tag}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="flex items-center gap-1 px-3 py-1 bg-primary-green/10 text-primary-green text-sm rounded-full"
+                      >
+                        #{tag}
+                        <button
+                          type="button"
+                          onClick={() => removeTag(tag)}
+                          className="ml-1 hover:text-primary-red transition-colors"
+                        >
+                          ×
+                        </button>
+                      </motion.span>
+                    ))}
+                  </div>
+
+                  <input
+                    type="text"
+                    placeholder={t("addHashtagPlaceholder")}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                        addTag(e.currentTarget.value.trim());
+                        e.currentTarget.value = "";
+                      }
+                    }}
+                    className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
+                  />
+                  <p className="text-xs text-text-secondary mt-1">
+                    {t("pressEnterToAddHashtag")}
+                  </p>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -324,42 +378,6 @@ export default function PostPage() {
                       </motion.button>
                     ))}
                   </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    {t("addTags")} ({t("optional")})
-                  </label>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {formData.tags.map((tag) => (
-                      <motion.span
-                        key={tag}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="flex items-center gap-1 px-3 py-1 bg-primary-green/10 text-primary-green text-sm rounded-full"
-                      >
-                        #{tag}
-                        <button
-                          onClick={() => removeTag(tag)}
-                          className="ml-1 hover:text-primary-red transition-colors"
-                        >
-                          ×
-                        </button>
-                      </motion.span>
-                    ))}
-                  </div>
-
-                  <input
-                    type="text"
-                    placeholder={t("addTagPlaceholder")}
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter" && e.currentTarget.value.trim()) {
-                        addTag(e.currentTarget.value.trim());
-                        e.currentTarget.value = "";
-                      }
-                    }}
-                    className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
-                  />
                 </div>
               </div>
             </div>

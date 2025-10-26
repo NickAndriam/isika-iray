@@ -2,14 +2,15 @@ export interface User {
   id: string;
   name: string;
   businessName?: string;
-  accountType: 'personal' | 'company';
-  role: 'helper' | 'seeker' | 'both';
+  accountType: "personal" | "company";
+  role: "helper" | "seeker" | "both";
   region: string;
   commune?: string;
   address?: string;
   phoneNumber: string;
   phoneVisible: boolean;
   facebookLink?: string;
+  instagramLink?: string;
   email?: string;
   profilePicture?: string;
   logo?: string;
@@ -25,7 +26,7 @@ export interface User {
 export interface Badge {
   id: string;
   name: string;
-  type: 'verified' | 'trusted_helper' | 'popular_business';
+  type: "verified" | "trusted_helper" | "popular_business";
   description: string;
   icon: string;
 }
@@ -34,7 +35,7 @@ export interface Post {
   id: string;
   userId: string;
   user: User;
-  type: 'help_request' | 'help_offer';
+  type: "help_request" | "help_offer" | "sell";
   category: string;
   title: string;
   description: string;
@@ -47,11 +48,11 @@ export interface Post {
       lng: number;
     };
   };
-  status: 'open' | 'solved' | 'closed';
+  status: "open" | "solved" | "closed";
   createdAt: string;
   updatedAt: string;
-  contactMethod: 'message' | 'phone' | 'both';
-  urgency: 'low' | 'medium' | 'high';
+  contactMethod: "message" | "phone" | "both";
+  urgency: "low" | "medium" | "high";
   tags: string[];
 }
 
@@ -63,8 +64,8 @@ export interface Message {
   image?: string;
   timestamp: string;
   isRead: boolean;
-  type: 'contact_request' | 'message';
-  status: 'pending' | 'approved' | 'blocked';
+  type: "contact_request" | "message";
+  status: "pending" | "approved" | "blocked";
 }
 
 export interface Chat {
@@ -82,13 +83,13 @@ export interface Review {
   revieweeId: string;
   rating: number;
   comment: string;
-  type: 'thank_you' | 'review';
+  type: "thank_you" | "review";
   createdAt: string;
 }
 
 export interface CommunityPost {
   id: string;
-  type: 'tip' | 'story' | 'expert_content';
+  type: "tip" | "story" | "expert_content";
   title: string;
   content: string;
   image?: string;
@@ -109,7 +110,7 @@ export interface MapPin {
   isOnline: boolean;
 }
 
-export type Language = 'mg' | 'fr' | 'en';
+export type Language = "mg" | "fr" | "en";
 
 export interface AppState {
   currentUser: User | null;
@@ -120,7 +121,7 @@ export interface AppState {
 
 export interface Notification {
   id: string;
-  type: 'message' | 'rating' | 'contact_request' | 'system';
+  type: "message" | "rating" | "contact_request" | "system";
   title: string;
   message: string;
   isRead: boolean;

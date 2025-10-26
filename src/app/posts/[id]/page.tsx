@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { getCategoryTranslationKey } from "@/lib/categoryUtils";
+import { getPostTypeTranslationKey, getPostTypeColors } from "@/lib/postUtils";
 import { mockPosts } from "@/data/mockData";
 import {
   ArrowLeft,
@@ -257,15 +258,11 @@ export default function PostDetailsPage({ params }: PostDetailsPageProps) {
                 {t(getCategoryTranslationKey(post.category))}
               </span>
               <span
-                className={`
-            ${
-              post.type === "help_request"
-                ? "bg-primary-gold/30 text-primary-gold border border-primary-gold"
-                : "bg-blue-400/30 text-blue-500 border border-blue-500"
-            }
-            px-2 py-1  text-xs rounded font-medium`}
+                className={`${getPostTypeColors(
+                  post.type
+                )} px-2 py-1 text-xs rounded font-medium`}
               >
-                {t(post.type === "help_request" ? "helpRequest" : "helpOffer")}
+                {t(getPostTypeTranslationKey(post.type))}
               </span>
             </div>
 

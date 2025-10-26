@@ -92,6 +92,7 @@ export default function Header({
     { value: "all", label: t("all") },
     { value: "help_request", label: t("helpRequest") },
     { value: "help_offer", label: t("helpOffer") },
+    { value: "sell", label: t("sell") },
   ];
 
   const urgencyLevels = [

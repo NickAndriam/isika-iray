@@ -103,20 +103,12 @@ export default function HomePage() {
       />
 
       {/* Community Board */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="px-4 py-4"
-      >
+      <section className="px-4 py-4">
         <CommunityBoard posts={mockCommunityPosts} />
-      </motion.section>
+      </section>
 
       {/* Posts Feed */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="px-4 pb-4"
-      >
+      <section className="px-4 pb-4">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-text-primary">
             {t("recentPosts")}
@@ -151,19 +143,14 @@ export default function HomePage() {
           </motion.div>
         ) : (
           <div className="space-y-4">
-            {filteredPosts.map((post, index) => (
-              <motion.div
-                key={post.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
+            {filteredPosts.map((post) => (
+              <div key={post.id}>
                 <PostCard post={post} />
-              </motion.div>
+              </div>
             ))}
           </div>
         )}
-      </motion.section>
+      </section>
     </div>
   );
 }

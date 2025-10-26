@@ -38,15 +38,13 @@ export default function BottomNavigation() {
                     : "text-text-secondary hover:text-primary-red"
                 }`}
               >
-                <motion.div
-                  animate={{
-                    scale: isActive ? 1.1 : 1,
-                    rotate: isActive ? 5 : 0,
-                  }}
-                  transition={{ duration: 0.2 }}
+                <div
+                  className={`transition-transform duration-200 ${
+                    isActive ? "scale-110" : ""
+                  }`}
                 >
                   <Icon size={24} />
-                </motion.div>
+                </div>
                 <span className="text-[9px] mt-1 font-medium">{t(label)}</span>
               </motion.div>
             </Link>
