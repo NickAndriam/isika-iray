@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 import { useAppStore } from '@/store/useAppStore';
 import BottomNavigation from './BottomNavigation';
 import OfflineBanner from './OfflineBanner';
@@ -10,13 +11,18 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { isOnline } = useAppStore();
+  const { isOnline, currentUser } = useAppStore();
+  const pathname = usePathname();
+  
+  // Hide bottom navigation on onboarding and landing pages
+  const hideNavigation = pathname === '/onboarding' || (!currentUser && pathname === '/');
+  const showBottomNav = currentUser && !hideNavigation;
 
   return (
     <div className="min-h-screen bg-background">
       {!isOnline && <OfflineBanner />}
       
-      <main className="pb-20">
+      <main className={showBottomNav ? "pb-20" : ""}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -26,7 +32,7 @@ export default function Layout({ children }: LayoutProps) {
         </motion.div>
       </main>
       
-      <BottomNavigation />
+      {showBottomNav && <BottomNavigation />}
     </div>
   );
 }

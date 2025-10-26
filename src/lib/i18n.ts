@@ -194,6 +194,49 @@ const resources = {
       postDetails: "Fampahalalana momba ny post",
       postedBy: "Nomen'i",
       contactUser: "Mifandray amin'ny mpampiasa",
+
+      // User Profile
+      userProfile: "Mombamomba ny mpampiasa",
+      follow: "Manaraka",
+      following: "Manaraka",
+      memberSince: "Mpikambana nanomboka tamin'ny",
+      contactInformation: "Fampahalalana fifandraisana",
+      aboutUser: "Mombamomba ny mpampiasa",
+      location: "Toerana",
+      trustIndicators: "Fampahalalana azo itokiana",
+      yes: "Eny",
+      no: "Tsia",
+      viewPost: "Hijery ny post",
+
+      // Filter Modal
+      filterPosts: "Sivana vaovao",
+      type: "Karazana",
+      status: "Sata",
+      reset: "Hanafoana",
+      apply: "Ampiharina",
+
+      // Login Page
+      login: "Hiditra",
+      password: "Tenimiafina",
+      emailPlaceholder: "Ampio ny adiresy mailakao",
+      passwordPlaceholder: "Ampio ny tenimiafinao",
+      loginToYourAccount: "Hiditra ao amin'ny kaontinao",
+      invalidCredentials: "Adiresy mailaka na tenimiafina tsy marina",
+      loginError: "Fahadisoana amin'ny fidirana",
+      loggingIn: "Miandry...",
+      tryDemoAccounts: "Andramo amin'ny kaonty demo",
+      dontHaveAccount: "Tsy manana kaonty?",
+      signUp: "Misoratra anarana",
+
+      // Community Pages
+      communityPost: "Vaovao fiaraha-miasa",
+      relatedPosts: "Vaovao mifandraika",
+      searchCommunityPosts: "Hikaroka vaovao fiaraha-miasa...",
+      filterByType: "Sivana araka ny karazana",
+      allPosts: "Vaovao rehetra",
+      tip: "Torolalana",
+      story: "Tantara",
+      expertContent: "Votoaty manam-pahaizana",
     },
   },
   fr: {
@@ -389,6 +432,49 @@ const resources = {
       postDetails: "Détails de la publication",
       postedBy: "Publié par",
       contactUser: "Contacter l'utilisateur",
+
+      // User Profile
+      userProfile: "Profil utilisateur",
+      follow: "Suivre",
+      following: "Suivi",
+      memberSince: "Membre depuis",
+      contactInformation: "Informations de contact",
+      aboutUser: "À propos de l'utilisateur",
+      location: "Localisation",
+      trustIndicators: "Indicateurs de confiance",
+      yes: "Oui",
+      no: "Non",
+      viewPost: "Voir la publication",
+
+      // Filter Modal
+      filterPosts: "Filtrer les publications",
+      type: "Type",
+      status: "Statut",
+      reset: "Réinitialiser",
+      apply: "Appliquer",
+
+      // Login Page
+      login: "Se connecter",
+      password: "Mot de passe",
+      emailPlaceholder: "Entrez votre adresse e-mail",
+      passwordPlaceholder: "Entrez votre mot de passe",
+      loginToYourAccount: "Connectez-vous à votre compte",
+      invalidCredentials: "Email ou mot de passe incorrect",
+      loginError: "Erreur de connexion",
+      loggingIn: "Connexion...",
+      tryDemoAccounts: "Essayer les comptes de démonstration",
+      dontHaveAccount: "Vous n'avez pas de compte ?",
+      signUp: "S'inscrire",
+
+      // Community Pages
+      communityPost: "Publication communautaire",
+      relatedPosts: "Publications connexes",
+      searchCommunityPosts: "Rechercher des publications communautaires...",
+      filterByType: "Filtrer par type",
+      allPosts: "Toutes les publications",
+      tip: "Conseil",
+      story: "Histoire",
+      expertContent: "Contenu d'expert",
     },
   },
   en: {
@@ -582,6 +668,49 @@ const resources = {
       postDetails: "Post Details",
       postedBy: "Posted by",
       contactUser: "Contact User",
+
+      // User Profile
+      userProfile: "User Profile",
+      follow: "Follow",
+      following: "Following",
+      memberSince: "Member since",
+      contactInformation: "Contact Information",
+      aboutUser: "About User",
+      location: "Location",
+      trustIndicators: "Trust Indicators",
+      yes: "Yes",
+      no: "No",
+      viewPost: "View Post",
+
+      // Filter Modal
+      filterPosts: "Filter Posts",
+      type: "Type",
+      status: "Status",
+      reset: "Reset",
+      apply: "Apply",
+
+      // Login Page
+      login: "Login",
+      password: "Password",
+      emailPlaceholder: "Enter your email address",
+      passwordPlaceholder: "Enter your password",
+      loginToYourAccount: "Login to your account",
+      invalidCredentials: "Invalid email or password",
+      loginError: "Login error",
+      loggingIn: "Logging in...",
+      tryDemoAccounts: "Try demo accounts",
+      dontHaveAccount: "Don't have an account?",
+      signUp: "Sign up",
+
+      // Community Pages
+      communityPost: "Community Post",
+      relatedPosts: "Related Posts",
+      searchCommunityPosts: "Search community posts...",
+      filterByType: "Filter by type",
+      allPosts: "All Posts",
+      tip: "Tip",
+      story: "Story",
+      expertContent: "Expert Content",
     },
   },
 };

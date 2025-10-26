@@ -5,7 +5,6 @@ import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { Post } from "@/types";
 import { mockPosts } from "@/data/mockData";
 import {
   ArrowLeft,
@@ -51,19 +50,6 @@ export default function PostDetailsPage({ params }: PostDetailsPageProps) {
       router.replace("/");
     }
   }, [post, router]);
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "open":
-        return "text-success";
-      case "solved":
-        return "text-text-secondary";
-      case "closed":
-        return "text-error";
-      default:
-        return "text-text-secondary";
-    }
-  };
 
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
@@ -257,13 +243,6 @@ export default function PostDetailsPage({ params }: PostDetailsPageProps) {
                 >
                   {t(post.urgency)}
                 </span>
-                <span
-                  className={`text-sm font-medium ${getStatusColor(
-                    post.status
-                  )}`}
-                >
-                  {t(post.status)}
-                </span>
               </div>
               <div className="flex items-center gap-1 text-sm text-text-secondary">
                 <Clock size={14} />
@@ -276,7 +255,15 @@ export default function PostDetailsPage({ params }: PostDetailsPageProps) {
               <span className="px-2 py-1 bg-primary-green/10 text-primary-green text-xs font-medium rounded">
                 {post.category}
               </span>
-              <span className="text-sm text-text-secondary">
+              <span
+                className={`
+            ${
+              post.type === "help_request"
+                ? "bg-primary-gold/30 text-primary-gold border border-primary-gold"
+                : "bg-blue-400/30 text-blue-500 border border-blue-500"
+            }
+            px-2 py-1  text-xs rounded font-medium`}
+              >
                 {t(post.type === "help_request" ? "helpRequest" : "helpOffer")}
               </span>
             </div>
@@ -337,11 +324,15 @@ export default function PostDetailsPage({ params }: PostDetailsPageProps) {
 
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-semibold text-text-primary">
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => router.push(`/users/${post.user.id}`)}
+                    className="font-semibold text-text-primary hover:text-primary-green transition-colors text-left"
+                  >
                     {post.user.accountType === "company"
                       ? post.user.businessName
                       : post.user.name}
-                  </h3>
+                  </motion.button>
                   {post.user.isVerified && (
                     <Shield size={16} className="text-primary-green" />
                   )}

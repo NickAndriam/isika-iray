@@ -23,19 +23,6 @@ export default function PostCard({ post }: PostCardProps) {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "open":
-        return "text-success";
-      case "solved":
-        return "text-text-secondary";
-      case "closed":
-        return "text-error";
-      default:
-        return "text-text-secondary";
-    }
-  };
-
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
       case "high":
@@ -84,11 +71,18 @@ export default function PostCard({ post }: PostCardProps) {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-text-primary">
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/users/${post.user.id}`);
+                  }}
+                  className="font-semibold text-text-primary hover:text-primary-green transition-colors text-left"
+                >
                   {post.user.accountType === "company"
                     ? post.user.businessName
                     : post.user.name}
-                </h3>
+                </motion.button>
                 {post.user.isVerified && (
                   <Shield size={16} className="text-primary-green" />
                 )}
@@ -96,25 +90,17 @@ export default function PostCard({ post }: PostCardProps) {
               <div className="flex items-center gap-2 text-sm text-text-secondary">
                 <MapPin size={12} />
                 <span>{post.location.region}</span>
-                {post.location.commune && (
-                  <span>• {post.location.commune}</span>
-                )}
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col items-center gap-2">
             <span
               className={`px-2 py-1 rounded-full text-xs font-medium ${getUrgencyColor(
                 post.urgency
               )}`}
             >
               {t(post.urgency)}
-            </span>
-            <span
-              className={`text-sm font-medium ${getStatusColor(post.status)}`}
-            >
-              {t(post.status)}
             </span>
           </div>
         </div>
@@ -138,7 +124,15 @@ export default function PostCard({ post }: PostCardProps) {
           <span className="px-2 py-1 bg-primary-green/10 text-primary-green text-xs font-medium rounded">
             {post.category}
           </span>
-          <span className="text-sm text-text-secondary">
+          <span
+            className={`
+            ${
+              post.type === "help_request"
+                ? "bg-primary-gold/30 text-primary-gold border border-primary-gold"
+                : "bg-blue-400/30 text-blue-500 border border-blue-500"
+            }
+            px-2 py-1  text-xs rounded font-medium`}
+          >
             {t(post.type === "help_request" ? "helpRequest" : "helpOffer")}
           </span>
         </div>
