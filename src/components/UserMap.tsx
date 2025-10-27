@@ -10,7 +10,7 @@ import {
   Navigation,
   X,
   Star,
-  LocateIcon,
+  Locate,
 } from "lucide-react";
 import { User as UserType } from "@/types";
 import { useTranslation } from "react-i18next";
@@ -97,6 +97,9 @@ export default function UserMap({
   >(null);
   const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
   const [showDirections, setShowDirections] = useState(false);
+  const [routeCoordinates, setRouteCoordinates] = useState<[number, number][]>(
+    []
+  );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -156,8 +159,43 @@ export default function UserMap({
     setShowDirections(false);
   };
 
-  const handleShowDirections = () => {
-    setShowDirections(true);
+  const handleShowDirections = async () => {
+    if (!currentUserLocation || !selectedUser || !selectedUser.coordinates) {
+      return;
+    }
+
+    if (showDirections) {
+      // Hide directions
+      setShowDirections(false);
+      setRouteCoordinates([]);
+    } else {
+      // Show directions - fetch route from OSRM
+      setShowDirections(true);
+      try {
+        const start = `${currentUserLocation[1]},${currentUserLocation[0]}`;
+        const end = `${selectedUser.coordinates.lng},${selectedUser.coordinates.lat}`;
+        const response = await fetch(
+          `https://router.project-osrm.org/route/v1/driving/${start};${end}?overview=simplified&geometries=geojson`
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.code === "Ok" && data.routes && data.routes[0]) {
+            const coordinates = data.routes[0].geometry.coordinates.map(
+              (coord: [number, number]) => [coord[1], coord[0]] // Swap lat/lng
+            );
+            setRouteCoordinates(coordinates);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching route:", error);
+        // Fallback to straight line
+        setRouteCoordinates([
+          currentUserLocation,
+          [selectedUser.coordinates.lat, selectedUser.coordinates.lng],
+        ]);
+      }
+    }
   };
 
   const handleOpenNavigation = (user: UserType) => {
@@ -209,18 +247,12 @@ export default function UserMap({
         })}
 
         {/* Direction Line */}
-        {showDirections &&
-          selectedUser &&
-          currentUserLocation &&
-          selectedUser.coordinates && (
-            <Polyline
-              positions={[
-                [currentUserLocation[0], currentUserLocation[1]],
-                [selectedUser.coordinates.lat, selectedUser.coordinates.lng],
-              ]}
-              pathOptions={{ color: "#3b82f6", weight: 3, opacity: 0.7 }}
-            />
-          )}
+        {showDirections && routeCoordinates.length > 0 && (
+          <Polyline
+            positions={routeCoordinates}
+            pathOptions={{ color: "#3b82f6", weight: 4, opacity: 0.8 }}
+          />
+        )}
       </MapContainer>
 
       {/* Floating User Card */}
@@ -280,26 +312,39 @@ export default function UserMap({
                 </div>
 
                 <div className="flex gap-2">
+                  {/* See User Details Button */}
+                  <button
+                    onClick={() => handleSeeMore(selectedUser)}
+                    className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-primary-green text-white rounded-lg text-sm font-medium hover:bg-primary-green/90 transition-colors"
+                  >
+                    {t("seeUserDetails")}
+                  </button>
+
+                  {/* Show Directions Button */}
                   {currentUserLocation && (
                     <button
                       onClick={handleShowDirections}
-                      className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
+                      className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
                         showDirections
                           ? "bg-blue-500 text-white hover:bg-blue-600"
-                          : "bg-primary-green text-white hover:bg-primary-green/90"
+                          : "bg-white border border-border text-text-primary hover:bg-surface"
                       }`}
+                      title={t("showDirections")}
                     >
                       <Navigation size={14} />
-                      {showDirections ? t("directions") : t("showDirections")}
                     </button>
                   )}
-                  <button
-                    onClick={() => handleOpenNavigation(selectedUser)}
-                    className="flex items-center justify-center gap-2 py-2 px-3 border border-primary-green text-primary-green rounded-lg text-sm font-medium hover:bg-primary-green/10 transition-colors"
-                  >
-                    <Navigation size={14} />
-                    {t("navigate")}
-                  </button>
+
+                  {/* Navigate Button - opens external Google Maps */}
+                  {currentUserLocation && selectedUser.coordinates && (
+                    <button
+                      onClick={() => handleOpenNavigation(selectedUser)}
+                      className="flex items-center justify-center gap-2 py-2 px-3 bg-white border border-primary-green text-primary-green rounded-lg text-sm font-medium hover:bg-primary-green/10 transition-colors"
+                      title={t("openInGoogleMaps")}
+                    >
+                      <Locate size={14} />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

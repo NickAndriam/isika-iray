@@ -183,29 +183,57 @@ export default function ProfilePage() {
       </motion.section>
 
       {/* Location Map */}
-      {currentUser.coordinates && (
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          className="bg-white border-b border-border p-4"
-        >
-          <h3 className="font-semibold text-text-primary mb-3">
-            {t("location")}
-          </h3>
-          <SingleUserMap user={currentUser} height="h-64" />
-          <div className="mt-2 text-xs text-text-secondary">
-            <p>
-              {currentUser.region}
-              {currentUser.commune && `, ${currentUser.commune}`}
-            </p>
-            <p>
-              {currentUser.coordinates.lat.toFixed(4)},{" "}
-              {currentUser.coordinates.lng.toFixed(4)}
-            </p>
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15 }}
+        className="bg-white border-b border-border p-4"
+      >
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-semibold text-text-primary">{t("location")}</h3>
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              // TODO: Open location editor modal
+              alert("Location editor coming soon!");
+            }}
+            className="text-sm text-primary-green hover:text-primary-green/80 font-medium flex items-center gap-1"
+          >
+            <Edit size={14} />
+            {t("changeLocation")}
+          </motion.button>
+        </div>
+        {currentUser.coordinates ? (
+          <>
+            <SingleUserMap user={currentUser} height="h-64" />
+            <div className="mt-2 text-xs text-text-secondary">
+              <p>
+                {currentUser.region}
+                {currentUser.commune && `, ${currentUser.commune}`}
+              </p>
+              <p>
+                {currentUser.coordinates.lat.toFixed(4)},{" "}
+                {currentUser.coordinates.lng.toFixed(4)}
+              </p>
+            </div>
+          </>
+        ) : (
+          <div className="h-64 border border-border rounded-lg flex items-center justify-center">
+            <div className="text-center">
+              <MapPin size={32} className="text-text-secondary mx-auto mb-2" />
+              <p className="text-sm text-text-secondary mb-3">
+                {t("noLocationSet")}
+              </p>
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                className="bg-primary-green text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-green/90 transition-colors"
+              >
+                {t("addLocation")}
+              </motion.button>
+            </div>
           </div>
-        </motion.section>
-      )}
+        )}
+      </motion.section>
 
       {/* Tabs */}
       <TabNavigation
