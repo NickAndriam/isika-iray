@@ -28,6 +28,7 @@ import TabNavigation from "@/components/TabNavigation";
 import RatingDisplay from "@/components/RatingDisplay";
 import LocationMap from "@/components/LocationMap";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import SingleUserMap from "@/components/SingleUserMap";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState<"posts" | "reviews" | "settings">(
@@ -192,11 +193,17 @@ export default function ProfilePage() {
           <h3 className="font-semibold text-text-primary mb-3">
             {t("location")}
           </h3>
-          <LocationMap
-            region={currentUser.region}
-            commune={currentUser.commune}
-            coordinates={currentUser.coordinates}
-          />
+          <SingleUserMap user={currentUser} height="h-64" />
+          <div className="mt-2 text-xs text-text-secondary">
+            <p>
+              {currentUser.region}
+              {currentUser.commune && `, ${currentUser.commune}`}
+            </p>
+            <p>
+              {currentUser.coordinates.lat.toFixed(4)},{" "}
+              {currentUser.coordinates.lng.toFixed(4)}
+            </p>
+          </div>
         </motion.section>
       )}
 

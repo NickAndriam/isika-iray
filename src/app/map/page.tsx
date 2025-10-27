@@ -129,8 +129,8 @@ export default function MapPage() {
 
       {/* Map Container */}
       <div
-        // className="h-[calc(100vh-200px)]"
-        className="h-[80vh]"
+        className="h-[calc(100vh-200px)]"
+        // className="h-[80vh]"
       >
         <UserMap users={filteredUsers} onUserClick={handleUserClick} />
       </div>

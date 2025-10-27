@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Home, Plus, MapPin, MessageCircle, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import useScrollDirection from "@/hooks/useScrollDirection";
 
 const navItems = [
   { href: "/", icon: Home, label: "home" },
@@ -17,11 +18,13 @@ const navItems = [
 export default function BottomNavigation() {
   const pathname = usePathname();
   const { t } = useTranslation();
+  const direction = useScrollDirection();
   return (
     <motion.nav
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
+      initial={{ y: 0 }}
+      animate={{ y: direction === "down" ? 100 : 0 }}
+      transition={{ type: "spring", stiffness: 280, damping: 25 }}
+      style={{ willChange: "transform" }}
       className="fixed bottom-0 left-0 right-0 bg-white border border-border z-50 rounded-t-4xl shadow-2xl"
     >
       <div className="flex items-center justify-around py-2">
