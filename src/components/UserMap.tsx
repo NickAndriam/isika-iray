@@ -3,8 +3,17 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Building, User, Navigation, X, Star } from "lucide-react";
+import {
+  MapPin,
+  Building,
+  User,
+  Navigation,
+  X,
+  Star,
+  LocateIcon,
+} from "lucide-react";
 import { User as UserType } from "@/types";
+import { useTranslation } from "react-i18next";
 import "leaflet/dist/leaflet.css";
 
 // Dynamically import Leaflet components
@@ -24,6 +33,10 @@ const ZoomControl = dynamic(
   () => import("react-leaflet").then((mod) => mod.ZoomControl),
   { ssr: false }
 );
+const Polyline = dynamic(
+  () => import("react-leaflet").then((mod) => mod.Polyline),
+  { ssr: false }
+);
 
 let divIcon: any;
 if (typeof window !== "undefined") {
@@ -36,7 +49,23 @@ const createCustomIcon = (color: string) => {
   if (typeof window === "undefined" || !divIcon) return undefined;
   return divIcon({
     className: "custom-marker",
-    html: `<div style="background-color: ${color}; width: 30px; height: 30px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>`,
+    html: `<div style="display:flex;flex-direction:column;align-items:center;pointer-events:none;">
+        <div style="width:36px;height:36px;background:${color};border-radius:50%;border:3px solid #fff;box-shadow:0 4px 10px rgba(59,130,246,0.25)"></div>
+        <div style="width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid ${color};transform:translateY(-6px)"></div>
+      </div>`,
+    iconSize: [30, 30],
+    iconAnchor: [15, 30],
+  });
+};
+
+const UserMarker = () => {
+  if (typeof window === "undefined" || !divIcon) return undefined;
+  return divIcon({
+    className: "custom-marker animate-pulse diration-500",
+    html: `<div style="display:flex;flex-direction:column;align-items:center;pointer-events:none;">
+        <div style="width:36px;height:36px;background:#3b82f6;border-radius:50%;border:3px solid #fff;box-shadow:0 4px 10px rgba(59,130,246,0.25)"></div>
+        <div style="width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid #3b82f6;transform:translateY(-6px)"></div>
+      </div>`,
     iconSize: [30, 30],
     iconAnchor: [15, 30],
   });
@@ -45,6 +74,7 @@ const createCustomIcon = (color: string) => {
 interface UserMapProps {
   users: UserType[];
   onUserClick?: (user: UserType) => void;
+  currentUserLocation?: [number, number] | null;
   height?: string;
   className?: string;
 }
@@ -56,14 +86,17 @@ const DEFAULT_ZOOM = 6;
 export default function UserMap({
   users,
   onUserClick,
+  currentUserLocation,
   height = "h-full",
   className = "",
 }: UserMapProps) {
+  const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
   const [bounds, setBounds] = useState<
     [[number, number], [number, number]] | null
   >(null);
   const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
+  const [showDirections, setShowDirections] = useState(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -107,10 +140,12 @@ export default function UserMap({
 
   const handleMarkerClick = (user: UserType) => {
     setSelectedUser(user);
+    setShowDirections(false);
   };
 
   const handleCloseCard = () => {
     setSelectedUser(null);
+    setShowDirections(false);
   };
 
   const handleSeeMore = (user: UserType) => {
@@ -118,6 +153,18 @@ export default function UserMap({
       onUserClick(user);
     }
     setSelectedUser(null);
+    setShowDirections(false);
+  };
+
+  const handleShowDirections = () => {
+    setShowDirections(true);
+  };
+
+  const handleOpenNavigation = (user: UserType) => {
+    if (user.coordinates && currentUserLocation) {
+      const url = `https://www.google.com/maps/dir/${currentUserLocation[0]},${currentUserLocation[1]}/${user.coordinates.lat},${user.coordinates.lng}`;
+      window.open(url, "_blank");
+    }
   };
 
   return (
@@ -131,12 +178,18 @@ export default function UserMap({
         style={{ height: "100%", width: "100%" }}
         zoomControl={false}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <ZoomControl position="bottomright" />
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <ZoomControl position="topright" />
 
+        {/* Current User Location Marker */}
+        {currentUserLocation && (
+          <Marker
+            position={currentUserLocation}
+            icon={UserMarker()} // Blue color for current user
+          />
+        )}
+
+        {/* User Markers */}
         {users.map((user) => {
           if (!user.coordinates?.lat || !user.coordinates?.lng) return null;
 
@@ -154,6 +207,20 @@ export default function UserMap({
             />
           );
         })}
+
+        {/* Direction Line */}
+        {showDirections &&
+          selectedUser &&
+          currentUserLocation &&
+          selectedUser.coordinates && (
+            <Polyline
+              positions={[
+                [currentUserLocation[0], currentUserLocation[1]],
+                [selectedUser.coordinates.lat, selectedUser.coordinates.lng],
+              ]}
+              pathOptions={{ color: "#3b82f6", weight: 3, opacity: 0.7 }}
+            />
+          )}
       </MapContainer>
 
       {/* Floating User Card */}
@@ -163,7 +230,7 @@ export default function UserMap({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="absolute bottom-4 left-4 right-4 bg-white rounded-lg shadow-lg border border-border p-4 z-50 max-w-sm"
+            className="absolute bottom-20 left-4 right-4 bg-white rounded-lg shadow-lg border border-border p-4 z-999 max-w-sm"
           >
             <div className="flex items-start gap-3">
               <div
@@ -213,12 +280,25 @@ export default function UserMap({
                 </div>
 
                 <div className="flex gap-2">
+                  {currentUserLocation && (
+                    <button
+                      onClick={handleShowDirections}
+                      className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-medium transition-colors ${
+                        showDirections
+                          ? "bg-blue-500 text-white hover:bg-blue-600"
+                          : "bg-primary-green text-white hover:bg-primary-green/90"
+                      }`}
+                    >
+                      <Navigation size={14} />
+                      {showDirections ? t("directions") : t("showDirections")}
+                    </button>
+                  )}
                   <button
-                    onClick={() => handleSeeMore(selectedUser)}
-                    className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-primary-green text-white rounded-lg text-sm font-medium hover:bg-primary-green/90 transition-colors"
+                    onClick={() => handleOpenNavigation(selectedUser)}
+                    className="flex items-center justify-center gap-2 py-2 px-3 border border-primary-green text-primary-green rounded-lg text-sm font-medium hover:bg-primary-green/10 transition-colors"
                   >
                     <Navigation size={14} />
-                    See More
+                    {t("navigate")}
                   </button>
                 </div>
               </div>
