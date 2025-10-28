@@ -3,7 +3,7 @@ export interface User {
   name: string;
   businessName?: string;
   accountType: "personal" | "company";
-  role: "helper" | "seeker" | "both";
+  role: "helper" | "seeker" | "both" | "sell";
   region: string;
   commune?: string;
   address?: string;

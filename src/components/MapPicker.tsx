@@ -19,9 +19,9 @@ const Marker = dynamic(
 );
 
 // Only import leaflet on client side
-if (typeof window !== "undefined") {
-  require("leaflet/dist/leaflet.css");
-}
+// if (typeof window !== "undefined") {
+//   require("leaflet/dist/leaflet.css");
+// }
 
 let Icon: any, DefaultIcon: any;
 if (typeof window !== "undefined") {

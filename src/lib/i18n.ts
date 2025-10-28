@@ -66,7 +66,7 @@ const resources = {
       myPosts: "Post",
       myRatings: "Naotiko",
       settings: "Fikirana",
-      logout: "Mivoaka",
+      logout: "Hivoaka",
       rating: "Naoty",
       reviews: "Fanehoan-kevitra",
       skills: "Fahaizana",
@@ -87,7 +87,7 @@ const resources = {
       expertContent: "Votoaty ny manam-pahaizana",
 
       // Common
-      loading: "Miandry...",
+      loading: "Miandrasa kely...",
       error: "Fahadisoana",
       success: "Nahomby",
       retry: "Andramo indray",
@@ -96,12 +96,12 @@ const resources = {
       save: "Tehirizina",
       delete: "Fafana",
       edit: "Ovaina",
-      view: "Jereo",
+      view: "Hijery",
       search: "Hikaroka",
       filter: "Sivana",
       sort: "Sokajy",
-      online: "Misy",
-      offline: "Tsy misy",
+      online: "Ato",
+      offline: "Tsy Ato",
 
       // Additional keys
       step: "Dingana",
@@ -109,7 +109,7 @@ const resources = {
       selectRoleDescription: "Safidio ny anjara asanao",
       needHelpDescription: "Mila fanampiana amin'ny zavatra iray",
       canHelpDescription: "Afaka manampy olona",
-      bothDescription: "Mety daholo izy roa",
+      bothDescription: "Mila fanampiana sy afaka manampy",
       accountTypeDescription: "Safidio ny karazana kaonty",
       personalDescription: "Olona manokana",
       companyDescription: "Orinasa na fikambanana",
@@ -292,7 +292,7 @@ const resources = {
       selectServices: "Safidio serivisy",
       selectServicesDescription: "Safidio ny karazana serivisy omenao",
       specificSkills: "Fahaizana manokana",
-      addSkillPlaceholder: "Ampio fahaizana",
+      addSkillPlaceholder: "Ampio ny fahalalanao",
       pressEnterToAdd: "Tsindrio Enter mba hanampy",
       categories: "Sokajy",
       categoriesOrServices: "Sokajy na serivisy",
@@ -301,6 +301,9 @@ const resources = {
       additionalInfoDescription:
         "Ampio ny fampahalalana fanampiny (tsy voatery)",
       skip: "Tsy hanao",
+      selectLocation: "Ny toerana misy anao",
+      selectLocationDescription:
+        "Tadiavo ny toerana misy anao amin'ny sarintany",
 
       // Map Location
       addLocation: "Ampio toerana",
@@ -311,7 +314,14 @@ const resources = {
       saveLocation: "Tehirizina",
       clearLocation: "Hanala toerana",
       noLocationSet: "Tsy misy toerana voafaritra",
-      locationPrivacy: "Azy irery ihany no hijerena ny toeranao",
+      languageNames: {
+        mg: "Malagasy",
+        fr: "Français",
+        en: "English",
+      },
+      phonePlaceholder: "+261 34 12 345 67",
+      facebookPlaceholder: "https://facebook.com/yourprofile",
+      instagramPlaceholder: "https://instagram.com/yourprofile",
     },
   },
   fr: {
@@ -421,7 +431,7 @@ const resources = {
       selectRoleDescription: "Choisissez votre rôle",
       needHelpDescription: "J'ai besoin d'aide avec quelque chose",
       canHelpDescription: "Je peux aider les gens",
-      bothDescription: "Je peux aider et j'ai besoin d'aide",
+      bothDescription: "J'ai besoin d'aide et je peux aider",
       accountTypeDescription: "Choisissez le type de compte",
       personalDescription: "Personnel",
       companyDescription: "Entreprise ou organisation",
@@ -602,6 +612,8 @@ const resources = {
       category_other: "Autre",
 
       // Onboarding Services
+      selectLocation: "Choix de l'emplacement",
+      selectLocationDescription: "Trouvez votre emplacement sur la carte",
       selectServices: "Sélectionner les services",
       selectServicesDescription:
         "Choisissez le type de services que vous proposez",
@@ -625,7 +637,14 @@ const resources = {
       saveLocation: "Enregistrer",
       clearLocation: "Effacer l'emplacement",
       noLocationSet: "Aucun emplacement défini",
-      locationPrivacy: "Seul vous pouvez voir votre emplacement",
+      languageNames: {
+        mg: "Malagasy",
+        fr: "Français",
+        en: "English",
+      },
+      phonePlaceholder: "+261 34 12 345 67",
+      facebookPlaceholder: "https://facebook.com/votreprofil",
+      instagramPlaceholder: "https://instagram.com/votreprofil",
     },
   },
   en: {
@@ -735,7 +754,7 @@ const resources = {
       selectRoleDescription: "Choose your role",
       needHelpDescription: "I need help with something",
       canHelpDescription: "I can help people",
-      bothDescription: "I can help and need help",
+      bothDescription: "I need help and can help",
       accountTypeDescription: "Choose account type",
       personalDescription: "Personal",
       companyDescription: "Company or organization",
@@ -914,6 +933,8 @@ const resources = {
       category_other: "Other",
 
       // Onboarding Services
+      selectLocation: "Select Location",
+      selectLocationDescription: "Find your location on the map",
       selectServices: "Select Services",
       selectServicesDescription: "Choose the type of services you offer",
       specificSkills: "Specific Skills",
@@ -934,7 +955,14 @@ const resources = {
       saveLocation: "Save",
       clearLocation: "Clear Location",
       noLocationSet: "No location set",
-      locationPrivacy: "Only you can see your location",
+      languageNames: {
+        mg: "Malagasy",
+        fr: "Français",
+        en: "English",
+      },
+      phonePlaceholder: "+261 34 12 345 67",
+      facebookPlaceholder: "https://facebook.com/yourprofile",
+      instagramPlaceholder: "https://instagram.com/yourprofile",
     },
   },
 };

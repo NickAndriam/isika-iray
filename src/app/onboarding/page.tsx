@@ -20,13 +20,14 @@ import {
   Mail,
   Instagram,
   MapPin,
+  ShoppingCart,
 } from "lucide-react";
 
 export default function OnboardingPage() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<Partial<User>>({});
   const [userIdCounter] = useState(() => Math.floor(Math.random() * 1000000));
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { login } = useAuthStore();
   const { setLanguage } = useAppStore();
   const router = useRouter();
@@ -126,14 +127,15 @@ export default function OnboardingPage() {
                 {t("selectLanguage")}
               </h3>
               {[
-                { code: "mg", name: "Malagasy", flag: "🇲🇬" },
-                { code: "fr", name: "Français", flag: "🇫🇷" },
-                { code: "en", name: "English", flag: "🇺🇸" },
+                { code: "mg", name: t("languageNames.mg"), flag: "🇲🇬" },
+                { code: "fr", name: t("languageNames.fr"), flag: "🇫🇷" },
+                { code: "en", name: t("languageNames.en"), flag: "🇺🇸" },
               ].map((lang) => (
                 <motion.button
                   key={lang.code}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => {
+                  onClick={async () => {
+                    await i18n.changeLanguage(lang.code);
                     setLanguage(lang.code as "mg" | "fr" | "en");
                     handleNext();
                   }}
@@ -178,6 +180,13 @@ export default function OnboardingPage() {
                   description: t("canHelpDescription"),
                   icon: Users,
                   color: "text-primary-green",
+                },
+                {
+                  role: "sell",
+                  title: t("sell"),
+                  description: t("sellDescription"),
+                  icon: ShoppingCart,
+                  color: "text-primary-blue",
                 },
                 {
                   role: "both",
@@ -273,21 +282,41 @@ export default function OnboardingPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            className="text-center"
           >
-            <h2 className="text-2xl font-bold text-text-primary mb-2 text-center">
-              {t("basicInformation")}
-            </h2>
-            <p className="text-text-secondary mb-8 text-center">
-              {t("basicInformationDescription")}
-            </p>
+            <div className="mb-8">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="w-16 h-16 bg-primary-green/20 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <UserIcon className="w-8 h-8 text-primary-green" />
+              </motion.div>
+              <h2 className="text-2xl font-bold text-text-primary mb-2">
+                {t("basicInformation")}
+              </h2>
+              <p className="text-text-secondary">
+                {t("basicInformationDescription")}
+              </p>
+            </div>
 
-            <div className="space-y-4">
-              <div>
+            <motion.div
+              className="space-y-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+              >
                 <label className="block text-sm font-medium text-text-primary mb-2">
                   {formData.accountType === "company"
                     ? t("businessName")
                     : t("name")}{" "}
-                  *
+                  <span className="text-primary-red">*</span>
                 </label>
                 <input
                   type="text"
@@ -304,23 +333,27 @@ export default function OnboardingPage() {
                       e.target.value
                     )
                   }
-                  className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
+                  className="w-full p-4 border-2 border-border rounded-xl focus:ring-2 focus:ring-primary-green focus:border-primary-green transition-all duration-200 bg-white/80 backdrop-blur-sm"
                   placeholder={
                     formData.accountType === "company"
                       ? t("businessNamePlaceholder")
                       : t("namePlaceholder")
                   }
                 />
-              </div>
+              </motion.div>
 
-              <div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 }}
+              >
                 <label className="block text-sm font-medium text-text-primary mb-2">
-                  {t("region")} *
+                  {t("region")} <span className="text-primary-red">*</span>
                 </label>
                 <select
                   value={formData.region || ""}
                   onChange={(e) => updateFormData("region", e.target.value)}
-                  className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
+                  className="w-full p-4 border-2 border-border rounded-xl focus:ring-2 focus:ring-primary-green focus:border-primary-green transition-all duration-200 bg-white/80 backdrop-blur-sm"
                 >
                   <option value="">{t("selectRegion")}</option>
                   {[
@@ -336,11 +369,15 @@ export default function OnboardingPage() {
                     </option>
                   ))}
                 </select>
-              </div>
+              </motion.div>
 
-              <div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7 }}
+              >
                 <label className="block text-sm font-medium text-text-primary mb-2">
-                  {t("phoneNumber")} *
+                  {t("phoneNumber")} <span className="text-primary-red">*</span>
                 </label>
                 <input
                   type="tel"
@@ -348,12 +385,17 @@ export default function OnboardingPage() {
                   onChange={(e) =>
                     updateFormData("phoneNumber", e.target.value)
                   }
-                  className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
-                  placeholder="+261 34 12 345 67"
+                  className="w-full p-4 border-2 border-border rounded-xl focus:ring-2 focus:ring-primary-green focus:border-primary-green transition-all duration-200 bg-white/80 backdrop-blur-sm"
+                  placeholder={t("phonePlaceholder")}
                 />
-              </div>
+              </motion.div>
 
-              <div className="flex items-center gap-2">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.8 }}
+                className="flex items-center gap-3 p-4 bg-white/50 rounded-xl border border-border"
+              >
                 <input
                   type="checkbox"
                   id="phoneVisible"
@@ -361,16 +403,16 @@ export default function OnboardingPage() {
                   onChange={(e) =>
                     updateFormData("phoneVisible", e.target.checked)
                   }
-                  className="w-4 h-4 text-primary-green border-border rounded focus:ring-primary-green"
+                  className="w-5 h-5 text-primary-green border-2 border-border rounded focus:ring-primary-green focus:ring-2"
                 />
                 <label
                   htmlFor="phoneVisible"
-                  className="text-sm text-text-primary"
+                  className="text-sm text-text-primary cursor-pointer"
                 >
                   {t("phoneVisible")}
                 </label>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
         )}
 
@@ -379,13 +421,24 @@ export default function OnboardingPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            className="text-center"
           >
-            <h2 className="text-2xl font-bold text-text-primary mb-2 text-center">
-              {t("additionalInfo")}
-            </h2>
-            <p className="text-text-secondary mb-8 text-center">
-              {t("additionalInfoDescription")}
-            </p>
+            <div className="mb-8">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="w-16 h-16 bg-primary-gold/20 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <MapPin className="w-8 h-8 text-primary-gold" />
+              </motion.div>
+              <h2 className="text-2xl font-bold text-text-primary mb-2">
+                {t("additionalInfo")}
+              </h2>
+              <p className="text-text-secondary">
+                {t("additionalInfoDescription")}
+              </p>
+            </div>
 
             <div className="space-y-6">
               {/* Social Media and Contact */}
@@ -401,7 +454,7 @@ export default function OnboardingPage() {
                     onChange={(e) =>
                       updateFormData("facebookLink", e.target.value)
                     }
-                    placeholder="https://facebook.com/yourprofile"
+                    placeholder={t("facebookPlaceholder")}
                     className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
                   />
                 </div>
@@ -417,7 +470,7 @@ export default function OnboardingPage() {
                     onChange={(e) =>
                       updateFormData("instagramLink", e.target.value)
                     }
-                    placeholder="https://instagram.com/yourprofile"
+                    placeholder={t("instagramPlaceholder")}
                     className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
                   />
                 </div>
@@ -431,7 +484,7 @@ export default function OnboardingPage() {
                     type="email"
                     value={formData.email || ""}
                     onChange={(e) => updateFormData("email", e.target.value)}
-                    placeholder="your.email@example.com"
+                    placeholder={t("emailPlaceholder")}
                     className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
                   />
                 </div>
