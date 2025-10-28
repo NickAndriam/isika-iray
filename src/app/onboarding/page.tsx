@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import {
   Heart,
   Users,
@@ -474,14 +475,12 @@ export default function OnboardingPage() {
                 transition={{ delay: 1.0 }}
                 className="flex items-center gap-3 p-4 bg-white rounded-lg border border-border"
               >
-                <input
-                  type="checkbox"
+                <Switch
                   id="phoneVisible"
                   checked={formData.phoneVisible || false}
-                  onChange={(e) =>
-                    updateFormData("phoneVisible", e.target.checked)
+                  onCheckedChange={(checked) =>
+                    updateFormData("phoneVisible", checked)
                   }
-                  className="w-5 h-5 text-primary-green border-2 border-border rounded focus:ring-primary-green focus:ring-2"
                 />
                 <label
                   htmlFor="phoneVisible"
@@ -525,14 +524,12 @@ export default function OnboardingPage() {
               transition={{ delay: 0.4 }}
             >
               <div className="flex items-center gap-3 p-4 bg-white rounded-lg border border-border">
-                <input
-                  type="checkbox"
+                <Switch
                   id="mapVisible"
                   checked={formData.mapVisible || false}
-                  onChange={(e) =>
-                    updateFormData("mapVisible", e.target.checked)
+                  onCheckedChange={(checked) =>
+                    updateFormData("mapVisible", checked)
                   }
-                  className="w-5 h-5 text-primary-blue border-2 border-border rounded focus:ring-primary-blue focus:ring-2"
                 />
                 <label
                   htmlFor="mapVisible"
@@ -605,14 +602,14 @@ export default function OnboardingPage() {
                     <Facebook className="inline w-4 h-4 mr-2" />
                     {t("facebookLink")} ({t("optional")})
                   </label>
-                  <input
+                  <Input
                     type="url"
                     value={formData.facebookLink || ""}
                     onChange={(e) =>
                       updateFormData("facebookLink", e.target.value)
                     }
                     placeholder={t("facebookPlaceholder")}
-                    className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
+                    className="h-12"
                   />
                 </div>
 
@@ -621,14 +618,14 @@ export default function OnboardingPage() {
                     <Instagram className="inline w-4 h-4 mr-2" />
                     {t("instagramLink")} ({t("optional")})
                   </label>
-                  <input
+                  <Input
                     type="url"
                     value={formData.instagramLink || ""}
                     onChange={(e) =>
                       updateFormData("instagramLink", e.target.value)
                     }
                     placeholder={t("instagramPlaceholder")}
-                    className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
+                    className="h-12"
                   />
                 </div>
 
@@ -637,12 +634,12 @@ export default function OnboardingPage() {
                     <Mail className="inline w-4 h-4 mr-2" />
                     {t("email")} ({t("optional")})
                   </label>
-                  <input
+                  <Input
                     type="email"
                     value={formData.email || ""}
                     onChange={(e) => updateFormData("email", e.target.value)}
                     placeholder={t("emailPlaceholder")}
-                    className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
+                    className="h-12"
                   />
                 </div>
               </div>
@@ -716,7 +713,7 @@ export default function OnboardingPage() {
                     </span>
                   ))}
                 </div>
-                <input
+                <Input
                   type="text"
                   placeholder={t("addSkillPlaceholder")}
                   onKeyPress={(e) => {
@@ -734,7 +731,7 @@ export default function OnboardingPage() {
                       }
                     }
                   }}
-                  className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
+                  className="h-12"
                 />
                 <p className="text-xs text-text-secondary mt-1">
                   {t("pressEnterToAdd")}

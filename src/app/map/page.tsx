@@ -18,6 +18,8 @@ import {
   MapPinned,
 } from "lucide-react";
 import UserMap from "@/components/UserMap";
+import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
 import { User as UserType } from "@/types";
 
 export default function MapPage() {
@@ -174,12 +176,12 @@ export default function MapPage() {
                   size={20}
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-secondary"
                 />
-                <input
+                <Input
                   type="text"
                   placeholder={t("searchUsers")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary-green focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 h-12"
                 />
               </div>
 
@@ -214,11 +216,9 @@ export default function MapPage() {
                 </h3>
                 <div className="space-y-2">
                   <label className="flex items-center gap-3 p-3 bg-surface rounded-lg cursor-pointer hover:bg-border transition-colors">
-                    <input
-                      type="checkbox"
+                    <Switch
                       checked={showPersonal}
-                      onChange={(e) => setShowPersonal(e.target.checked)}
-                      className="w-5 h-5 text-primary-green border-border rounded focus:ring-primary-green"
+                      onCheckedChange={setShowPersonal}
                     />
                     <div className="flex items-center gap-2">
                       <Users size={18} className="text-primary-gold" />
@@ -228,11 +228,9 @@ export default function MapPage() {
                     </div>
                   </label>
                   <label className="flex items-center gap-3 p-3 bg-surface rounded-lg cursor-pointer hover:bg-border transition-colors">
-                    <input
-                      type="checkbox"
+                    <Switch
                       checked={showBusiness}
-                      onChange={(e) => setShowBusiness(e.target.checked)}
-                      className="w-5 h-5 text-primary-green border-border rounded focus:ring-primary-green"
+                      onCheckedChange={setShowBusiness}
                     />
                     <div className="flex items-center gap-2">
                       <Building size={18} className="text-primary-green" />
