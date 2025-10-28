@@ -83,7 +83,7 @@ const resources = {
       typeMessage: "Soraty hafatra...",
 
       // Community
-      communityBoard: "Tabilao fiaraha-miasa",
+      createStory: "Hamorona tantara",
       dailyTips: "Torolalana isan'andro",
       storyOfDay: "Tantara amin'ny andro",
       expertContent: "Votoaty ny manam-pahaizana",
@@ -412,7 +412,7 @@ const resources = {
       typeMessage: "Tapez un message...",
 
       // Community
-      communityBoard: "Tableau communautaire",
+      createStory: "Créer une histoire",
       dailyTips: "Conseils du jour",
       storyOfDay: "Histoire du jour",
       expertContent: "Contenu d'expert",
@@ -742,7 +742,7 @@ const resources = {
       typeMessage: "Type a message...",
 
       // Community
-      communityBoard: "Community Board",
+      createStory: "Create Story",
       dailyTips: "Daily Tips",
       storyOfDay: "Story of the Day",
       expertContent: "Expert Content",
