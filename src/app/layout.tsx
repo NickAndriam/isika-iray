@@ -4,6 +4,7 @@ import "./globals.css";
 import Layout from "@/components/Layout";
 import I18nProvider from "@/components/I18nProvider";
 import SessionProvider from "@/components/SessionProvider";
+import TopLoader from "@/components/TopLoader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="mg">
       <body className={inter.className}>
+        <TopLoader />
         <SessionProvider>
           <I18nProvider>
             <Layout>{children}</Layout>

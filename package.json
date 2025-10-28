@@ -24,6 +24,7 @@
     "leaflet": "^1.9.4",
     "lucide-react": "^0.548.0",
     "next": "16.0.0",
+    "nextjs-toploader": "^3.9.17",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-i18next": "^16.2.0",
