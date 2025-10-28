@@ -4,7 +4,9 @@ export interface MadagascarLocation {
   district: string;
 }
 
-export const madagascarLocations = {
+type MadagascarData = Record<string, { regions: Record<string, string[]> }>;
+
+export const madagascarLocations: MadagascarData = {
   Antananarivo: {
     regions: {
       Analamanga: [
@@ -64,19 +66,12 @@ export const madagascarLocations = {
 export const provinces = Object.keys(madagascarLocations);
 
 export const getRegionsByProvince = (province: string): string[] => {
-  return Object.keys(
-    madagascarLocations[province as keyof typeof madagascarLocations]
-      ?.regions || {}
-  );
+  return Object.keys(madagascarLocations[province]?.regions ?? {});
 };
 
 export const getDistrictsByRegion = (
   province: string,
   region: string
 ): string[] => {
-  return (
-    madagascarLocations[province as keyof typeof madagascarLocations]?.regions[
-      region as keyof (typeof madagascarLocations)[typeof province]["regions"]
-    ] || []
-  );
+  return madagascarLocations[province]?.regions?.[region] ?? [];
 };
