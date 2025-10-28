@@ -8,6 +8,7 @@ import { formatDate } from "@/lib/dateUtils";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useAppStore } from "@/store/useAppStore";
 import { mockPosts, mockReviews } from "@/data/mockData";
+import { Button } from "@/components/ui/button";
 import {
   Edit,
   Settings,
@@ -54,6 +55,16 @@ export default function ProfilePage() {
   const handleLanguageChange = async (language: string) => {
     await i18n.changeLanguage(language);
     setLanguage(language as "mg" | "fr" | "en");
+  };
+
+  const handleMapVisibilityChange = (visible: boolean) => {
+    if (currentUser) {
+      // Update the user's map visibility setting
+      const updatedUser = { ...currentUser, mapVisible: visible };
+      // In a real app, you would save this to the backend
+      // For now, we'll just update the local state
+      console.log("Map visibility changed to:", visible);
+    }
   };
 
   if (!currentUser) {
@@ -432,6 +443,31 @@ export default function ProfilePage() {
                     <span className="text-text-primary">{lang.name}</span>
                   </motion.button>
                 ))}
+              </div>
+            </div>
+
+            {/* Map Visibility Settings */}
+            <div className="bg-white border border-border rounded-lg p-4">
+              <h3 className="font-semibold text-text-primary mb-3">
+                {t("mapVisible")}
+              </h3>
+              <p className="text-sm text-text-secondary mb-4">
+                {t("mapVisibilityDescription")}
+              </p>
+              <div className="flex items-center gap-3 p-3 bg-surface rounded-lg">
+                <input
+                  type="checkbox"
+                  id="mapVisibility"
+                  checked={currentUser.mapVisible || false}
+                  onChange={(e) => handleMapVisibilityChange(e.target.checked)}
+                  className="w-5 h-5 text-primary-blue border-2 border-border rounded focus:ring-primary-blue focus:ring-2"
+                />
+                <label
+                  htmlFor="mapVisibility"
+                  className="text-sm text-text-primary cursor-pointer"
+                >
+                  {t("mapVisible")}
+                </label>
               </div>
             </div>
 

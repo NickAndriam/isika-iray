@@ -9,7 +9,22 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useAppStore } from "@/store/useAppStore";
 import { User } from "@/types";
 import { categories } from "@/data/mockData";
+import {
+  madagascarLocations,
+  provinces,
+  getRegionsByProvince,
+  getDistrictsByRegion,
+} from "@/data/madagascarLocations";
 import LocationSelector from "@/components/LocationSelector";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import {
   Heart,
   Users,
@@ -32,8 +47,8 @@ export default function OnboardingPage() {
   const { setLanguage } = useAppStore();
   const router = useRouter();
 
-  // Calculate total steps - all accounts now get an additional optional info step
-  const totalSteps = 5;
+  // Calculate total steps - now includes separate map step
+  const totalSteps = 6;
 
   // Scroll to top when step changes
   useEffect(() => {
@@ -52,7 +67,9 @@ export default function OnboardingPage() {
         businessName: formData.businessName,
         accountType: formData.accountType || "personal",
         role: formData.role || "both",
-        region: formData.region || "",
+        province: formData.province,
+        region: formData.region,
+        district: formData.district,
         commune: formData.commune,
         phoneNumber: formData.phoneNumber || "",
         phoneVisible: formData.phoneVisible || false,
@@ -62,6 +79,7 @@ export default function OnboardingPage() {
         skills: formData.skills || [],
         services: formData.services || [],
         coordinates: formData.coordinates,
+        mapVisible: formData.mapVisible || false,
         rating: 0,
         reviewCount: 0,
         badges: [],
@@ -318,7 +336,7 @@ export default function OnboardingPage() {
                     : t("name")}{" "}
                   <span className="text-primary-red">*</span>
                 </label>
-                <input
+                <Input
                   type="text"
                   value={
                     formData.accountType === "company"
@@ -333,12 +351,12 @@ export default function OnboardingPage() {
                       e.target.value
                     )
                   }
-                  className="w-full p-4 border-2 border-border rounded-xl focus:ring-2 focus:ring-primary-green focus:border-primary-green transition-all duration-200 bg-white/80 backdrop-blur-sm"
                   placeholder={
                     formData.accountType === "company"
                       ? t("businessNamePlaceholder")
                       : t("namePlaceholder")
                   }
+                  className="h-12"
                 />
               </motion.div>
 
@@ -348,53 +366,113 @@ export default function OnboardingPage() {
                 transition={{ delay: 0.6 }}
               >
                 <label className="block text-sm font-medium text-text-primary mb-2">
-                  {t("region")} <span className="text-primary-red">*</span>
+                  {t("province")} <span className="text-primary-red">*</span>
                 </label>
-                <select
-                  value={formData.region || ""}
-                  onChange={(e) => updateFormData("region", e.target.value)}
-                  className="w-full p-4 border-2 border-border rounded-xl focus:ring-2 focus:ring-primary-green focus:border-primary-green transition-all duration-200 bg-white/80 backdrop-blur-sm"
+                <Select
+                  value={formData.province || ""}
+                  onValueChange={(value) => {
+                    updateFormData("province", value);
+                    updateFormData("region", "");
+                    updateFormData("district", "");
+                  }}
                 >
-                  <option value="">{t("selectRegion")}</option>
-                  {[
-                    "Antananarivo",
-                    "Toamasina",
-                    "Fianarantsoa",
-                    "Mahajanga",
-                    "Toliara",
-                    "Antsiranana",
-                  ].map((region) => (
-                    <option key={region} value={region}>
-                      {region}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="h-12">
+                    <SelectValue placeholder={t("selectProvince")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {provinces.map((province) => (
+                      <SelectItem key={province} value={province}>
+                        {province}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </motion.div>
+
+              {formData.province && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.7 }}
+                >
+                  <label className="block text-sm font-medium text-text-primary mb-2">
+                    {t("region")} <span className="text-primary-red">*</span>
+                  </label>
+                  <Select
+                    value={formData.region || ""}
+                    onValueChange={(value) => {
+                      updateFormData("region", value);
+                      updateFormData("district", "");
+                    }}
+                  >
+                    <SelectTrigger className="h-12">
+                      <SelectValue placeholder={t("selectRegion")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {getRegionsByProvince(formData.province).map((region) => (
+                        <SelectItem key={region} value={region}>
+                          {region}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </motion.div>
+              )}
+
+              {formData.province && formData.region && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  <label className="block text-sm font-medium text-text-primary mb-2">
+                    {t("district")} <span className="text-primary-red">*</span>
+                  </label>
+                  <Select
+                    value={formData.district || ""}
+                    onValueChange={(value) => updateFormData("district", value)}
+                  >
+                    <SelectTrigger className="h-12">
+                      <SelectValue placeholder={t("selectDistrict")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {getDistrictsByRegion(
+                        formData.province,
+                        formData.region
+                      ).map((district) => (
+                        <SelectItem key={district} value={district}>
+                          {district}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </motion.div>
+              )}
 
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.7 }}
+                transition={{ delay: 0.9 }}
               >
                 <label className="block text-sm font-medium text-text-primary mb-2">
                   {t("phoneNumber")} <span className="text-primary-red">*</span>
                 </label>
-                <input
+                <Input
                   type="tel"
                   value={formData.phoneNumber || ""}
                   onChange={(e) =>
                     updateFormData("phoneNumber", e.target.value)
                   }
-                  className="w-full p-4 border-2 border-border rounded-xl focus:ring-2 focus:ring-primary-green focus:border-primary-green transition-all duration-200 bg-white/80 backdrop-blur-sm"
                   placeholder={t("phonePlaceholder")}
+                  className="h-12"
                 />
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8 }}
-                className="flex items-center gap-3 p-4 bg-white/50 rounded-xl border border-border"
+                transition={{ delay: 1.0 }}
+                className="flex items-center gap-3 p-4 bg-white rounded-lg border border-border"
               >
                 <input
                   type="checkbox"
@@ -416,8 +494,87 @@ export default function OnboardingPage() {
           </motion.div>
         )}
 
-        {/* Optional Additional Information */}
+        {/* Map Location Selection */}
         {step === 5 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <div className="mb-8">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="w-16 h-16 bg-primary-blue/20 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <MapPin className="w-8 h-8 text-primary-blue" />
+              </motion.div>
+              <h2 className="text-2xl font-bold text-text-primary mb-2">
+                {t("selectLocation")}
+              </h2>
+              <p className="text-text-secondary">
+                {t("selectLocationDescription")}
+              </p>
+            </div>
+
+            <motion.div
+              className="space-y-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <div className="flex items-center gap-3 p-4 bg-white rounded-lg border border-border">
+                <input
+                  type="checkbox"
+                  id="mapVisible"
+                  checked={formData.mapVisible || false}
+                  onChange={(e) =>
+                    updateFormData("mapVisible", e.target.checked)
+                  }
+                  className="w-5 h-5 text-primary-blue border-2 border-border rounded focus:ring-primary-blue focus:ring-2"
+                />
+                <label
+                  htmlFor="mapVisible"
+                  className="text-sm text-text-primary cursor-pointer"
+                >
+                  {t("mapVisible")}
+                </label>
+              </div>
+
+              {formData.mapVisible && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  <label className="block text-sm font-medium text-text-primary mb-2">
+                    {t("addLocation")} ({t("optional")})
+                  </label>
+                  <p className="text-xs text-text-secondary mb-3">
+                    {t("addLocationDescription")}
+                  </p>
+                  <LocationSelector
+                    currentLocation={
+                      formData.coordinates
+                        ? {
+                            lat: formData.coordinates.lat,
+                            lng: formData.coordinates.lng,
+                          }
+                        : undefined
+                    }
+                    onLocationSelect={(location) =>
+                      updateFormData("coordinates", location)
+                    }
+                  />
+                </motion.div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+
+        {/* Optional Additional Information */}
+        {step === 6 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -532,29 +689,6 @@ export default function OnboardingPage() {
                 </div>
               )}
 
-              {/* Location on Map - for everyone */}
-              <div>
-                <label className="block text-sm font-medium text-text-primary mb-2">
-                  {t("addLocation")} ({t("optional")})
-                </label>
-                <p className="text-xs text-text-secondary mb-3">
-                  {t("addLocationDescription")}
-                </p>
-                <LocationSelector
-                  currentLocation={
-                    formData.coordinates
-                      ? {
-                          lat: formData.coordinates.lat,
-                          lng: formData.coordinates.lng,
-                        }
-                      : undefined
-                  }
-                  onLocationSelect={(location) =>
-                    updateFormData("coordinates", location)
-                  }
-                />
-              </div>
-
               {/* Skills Input - for everyone */}
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-2">
@@ -622,7 +756,7 @@ export default function OnboardingPage() {
             </motion.button>
           )}
 
-          {step === 5 ? (
+          {step === 6 ? (
             <>
               <motion.button
                 whileTap={{ scale: 0.95 }}
@@ -645,8 +779,10 @@ export default function OnboardingPage() {
               onClick={handleNext}
               disabled={
                 (step === 4 && !formData.name && !formData.businessName) ||
-                !formData.region ||
-                !formData.phoneNumber
+                (step === 4 && !formData.province) ||
+                (step === 4 && !formData.region) ||
+                (step === 4 && !formData.district) ||
+                (step === 4 && !formData.phoneNumber)
               }
               className="flex-1 py-3 px-6 bg-primary-green text-white rounded-lg hover:bg-primary-green/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >

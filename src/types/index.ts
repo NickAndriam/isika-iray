@@ -4,7 +4,9 @@ export interface User {
   businessName?: string;
   accountType: "personal" | "company";
   role: "helper" | "seeker" | "both" | "sell";
-  region: string;
+  province?: string;
+  region?: string;
+  district?: string;
   commune?: string;
   address?: string;
   phoneNumber: string;
@@ -25,6 +27,7 @@ export interface User {
     lat: number;
     lng: number;
   };
+  mapVisible?: boolean;
 }
 
 export interface Badge {
